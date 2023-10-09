@@ -11,11 +11,14 @@ datasource db {
 }
 
 model Post {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   content   String
-  published Boolean @default(true)
-  author    User?   @relation(fields: [authorId], references: [id])
+  published Boolean  @default(true)
+  author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
+  likes     Likes[]
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
 }
 
 model User {
@@ -25,4 +28,23 @@ model User {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
   posts     Post[]
+  likes     Likes[]
+  followers Follow[] @relation("UserFollowers")
+  followees Follow[] @relation("UserFollowees")
+}
+
+model Likes {
+  id       String  @id @default(cuid())
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId String?
+  post     Post?   @relation(fields: [postId], references: [id])
+  postId   String?
+}
+
+model Follow {
+  id         String @id @default(cuid())
+  follower   User   @relation(name: "UserFollowers", fields: [followerId], references: [id])
+  followerId String
+  followee   User   @relation(name: "UserFollowees", fields: [followeeId], references: [id])
+  followeeId String
 }
