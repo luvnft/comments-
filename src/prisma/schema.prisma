@@ -16,7 +16,7 @@ model Post {
   published Boolean  @default(true)
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
-  likes     Likes[]
+  likes     Like[]
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 }
@@ -28,12 +28,12 @@ model User {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
   posts     Post[]
-  likes     Likes[]
+  likes     Like[]
   followers Follow[] @relation("UserFollowers")
   followees Follow[] @relation("UserFollowees")
 }
 
-model Likes {
+model Like {
   id       String  @id @default(cuid())
   author   User?   @relation(fields: [authorId], references: [id])
   authorId String?
