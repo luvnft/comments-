@@ -22,15 +22,16 @@ model Post {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String?  @unique
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
-  posts     Post[]
-  likes     Like[]
-  followers Follow[] @relation("UserFollowers")
-  followees Follow[] @relation("UserFollowees")
+  id         String   @id @default(cuid())
+  name       String?
+  email      String?  @unique
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @updatedAt @map(name: "updated_at")
+  posts      Post[]
+  likes      Like[]
+  followers  Follow[] @relation("UserFollowers")
+  followees  Follow[] @relation("UserFollowees")
 }
 
 model Like {
