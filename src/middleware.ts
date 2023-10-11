@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { Magic } from "@magic-sdk/admin";
 
-const SECRET_API_KEY = process.env.MAGIC_LINK_API_KEY;
+const SECRET_API_KEY = process.env.MAGIC_LINK_SECRET_KEY;
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest, response: NextResponse) {
@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     console.log("token value in middleware is....", token?.value);
 
     if (!token) {
-      return NextResponse.redirect(new URL("/Unauthorized", request.url));
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
     let magic;
@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     return NextResponse.next();
   } catch (error) {
     console.error("Authentication middleware error:", error);
-    return NextResponse.redirect(new URL("/Unauthorized", request.url));
+    return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
 }
 
