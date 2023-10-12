@@ -17,6 +17,10 @@
     "react": "^18",
     "react-dom": "^18",
     "react-modal": "^3.16.1",
+    "react-social-media-embed": "^2.3.6",
+    "react-twitter-embed": "^4.0.4",
+    "react-youtube": "^10.1.0",
+    "recoil": "^0.7.7",
     "zod": "^3.22.4"
   },
   "devDependencies": {
