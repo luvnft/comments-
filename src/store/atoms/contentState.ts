@@ -6,6 +6,7 @@ export const contentState = atom<{
   source: string | null;
   rootUrl: string | null;
   contentId: string | null;
+  comments: any;
 }>({
   key: "videoState",
   default: {
@@ -14,5 +15,6 @@ export const contentState = atom<{
     source: null,
     rootUrl: null,
     contentId: null,
+    comments: null,
   },
 });

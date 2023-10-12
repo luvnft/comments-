@@ -1,5 +1,6 @@
 export function getYouTubeVideoId(url: string) {
   const match = url.match(/(?:\/|%3D|v=|vi=)([0-9A-Za-z-_]{11})(?:[%#?&]|$)/);
+  console.log(match);
   return match ? match[1] : null;
 }
 
@@ -11,10 +12,8 @@ export function getTweetIdFromUrl(url: string) {
 }
 
 export function getInstagramIdFromUrl(url: string) {
-  const match = url.match(
-    /https?:\/\/(?:www\.)?instagram\.com\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+\/?/
-  );
-  return match ? match[0] : null;
+  const match = url.match(/\/p\/([^/?]+)/) || url.match(/\/reel\/([^/?]+)/);
+  return match ? match[1] : null;
 }
 
 export function getFacebookContentIdFromUrl(url: string) {
