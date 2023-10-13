@@ -9,9 +9,9 @@ export default function LandingPage() {
 
   return (
     <div className="flex">
-      <div className="w-1/5"></div>
-      <div className="w-3/5">
-        <div>
+      <div className="w-1/5 hidden md:block"></div>
+      <div className="md:w-3/5">
+        <div className="flex justify-center">
           <Searchbar />
         </div>
         <div>
@@ -23,7 +23,7 @@ export default function LandingPage() {
           </div>
         )}
       </div>
-      <div className="w-1/5"></div>
+      <div className="w-1/5 hidden md:block"></div>
     </div>
   );
 }

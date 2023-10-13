@@ -20,6 +20,18 @@ export default async function handler(
       });
 
       if (existingUser) {
+        if (existingUser.username === null) {
+          let name = email.split("@")[0];
+          let username = name.concat(generateRandomString(6));
+          await prisma.user.update({
+            where: {
+              id: existingUser.id,
+            },
+            data: {
+              username: username,
+            },
+          });
+        }
         return res
           .status(201)
           .json({ message: "user already exists", user: existingUser });
@@ -57,7 +69,7 @@ export default async function handler(
           id: id,
           email: email,
           name: validName,
-          username: validUsername,
+          username: username,
           publicAddress: publicAddress,
         },
         include: { likes: true, followers: true, followees: true },

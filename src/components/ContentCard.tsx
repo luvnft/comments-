@@ -36,7 +36,9 @@ export default function ContentCard() {
           <FacebookEmbed url={content.link || ""} width={325} />
         </div>
       )}
-      <div>Source: {content.source}</div>
+      <div className="flex">
+        {content.source && <div>Source: </div>} {content.source}
+      </div>
       {/* <div>{content.link}</div>
       <div>{content.contentId}</div> */}
     </div>

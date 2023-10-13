@@ -37,7 +37,7 @@ export default function Navbar() {
   // const [userMetadata, setUserMetadata] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   let metadata: any = null;
-  // const router = useRouter();
+  const router = useRouter();
   const setUserState = useSetRecoilState(userState);
 
   useEffect(() => {
@@ -54,6 +54,30 @@ export default function Navbar() {
         const cookieValue = `token=${idToken}; path=/`;
         // Set the cookie
         document.cookie = cookieValue;
+        const createUserResponse = await axios({
+          method: "POST",
+          url: "/api/user/createUser",
+          data: {
+            id: metadata.issuer,
+            email: metadata.email,
+            publicAddress: metadata.publicAddress,
+          },
+        });
+        if (createUserResponse) {
+          setUserState({
+            isLoading: false,
+            email: createUserResponse.data.user.email,
+            role: "user",
+            id: createUserResponse.data.user.id,
+            username: createUserResponse.data.user.username,
+            isVerified: createUserResponse.data.user.isVerified,
+            isActivated: createUserResponse.data.user.isActivated,
+            likes: createUserResponse.data.user.likes,
+            followers: createUserResponse.data.user.followers,
+            followees: createUserResponse.data.user.followees,
+            publicAddress: createUserResponse.data.user.publicAddress,
+          });
+        }
 
         console.log("metadata from useEffect in navbar....", metadata); //remove later
       }
@@ -134,6 +158,7 @@ export default function Navbar() {
     });
     setIsLoggedIn(false);
     setIsModalOpen(false);
+    router.push("/");
   };
 
   const openModal = () => {
@@ -146,7 +171,14 @@ export default function Navbar() {
 
   return isLoggedIn ? (
     <div className="flex justify-between p-5">
-      <div className="font-extrabold text-xl">commentary.</div>
+      <div>
+        <div className="flex font-extrabold text-xl">
+          <div>commentary</div>
+          <div className="text-amber-600">.</div>
+        </div>
+        <div className="text-xs text-gray-600">comment & earn</div>
+      </div>
+
       <div className="flex justify-normal">
         <div className="flex items-center">
           <button
@@ -161,7 +193,12 @@ export default function Navbar() {
           </button>
         </div>
         <div className="flex items-center">
-          <button className="bg-[#212121] m-2 p-2 rounded-lg hover:cursor-pointer hover:bg-[#2d2d2d]">
+          <button
+            className="bg-[#212121] m-2 p-2 rounded-lg hover:cursor-pointer hover:bg-[#2d2d2d]"
+            onClick={() => {
+              router.push("/user/dashboard");
+            }}
+          >
             Dashboard
           </button>
         </div>
@@ -175,7 +212,13 @@ export default function Navbar() {
     </div>
   ) : (
     <div className="flex justify-between p-5">
-      <div className="font-extrabold text-xl">commentary.</div>
+      <div>
+        <div className="flex font-extrabold text-xl">
+          <div>commentary</div>
+          <div className="text-amber-600">.</div>
+        </div>
+        <div className="text-xs text-gray-600">comment & earn</div>
+      </div>
       <button
         className="bg-amber-600 rounded-xl p-3"
         onClick={() => {

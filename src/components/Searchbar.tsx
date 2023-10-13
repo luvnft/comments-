@@ -15,12 +15,23 @@ import {
   getYouTubeBaseUrl,
 } from "@/lib/getBaseUrl";
 import axios from "axios";
+import { useState } from "react";
 
 export default function Searchbar() {
   const setContentState = useSetRecoilState(contentState);
   const content = useRecoilValue(contentState);
+  const [currentLink, setCurrentLink] = useState<string>();
 
-  const handleSearch = async () => {
+  const handleSearch = async (link: string | null) => {
+    setContentState({
+      isLoading: true,
+      link: link,
+      source: null,
+      rootUrl: null,
+      contentId: null,
+      comments: null,
+    });
+
     const linkSource = getSourceFromLink(content.link || "");
     let contentId: any = null;
     let baseURL: any = null;
@@ -73,17 +84,15 @@ export default function Searchbar() {
         placeholder="insert link here"
         className="text-black w-80 p-2 m-2"
         onChange={(e) => {
-          setContentState({
-            isLoading: true,
-            link: e.target.value,
-            source: null,
-            rootUrl: null,
-            contentId: null,
-            comments: null,
-          });
+          setCurrentLink(e.target.value);
         }}
       />
-      <button className="bg-amber-600 rounded-xl p-2" onClick={handleSearch}>
+      <button
+        className="bg-amber-600 rounded-xl p-2"
+        onClick={() => {
+          handleSearch(currentLink || null);
+        }}
+      >
         Search
       </button>
     </div>

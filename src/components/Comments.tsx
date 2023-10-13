@@ -2,20 +2,31 @@ import { contentState } from "@/store/atoms/contentState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { useState } from "react";
+import {
+  userIdSelector,
+  userEmailSelector,
+} from "@/store/selectors/userDetailsSelector";
 
 export default function Comments() {
   const content = useRecoilValue(contentState);
+  const userId = useRecoilValue(userIdSelector);
+  const userEmail = useRecoilValue(userEmailSelector);
+
   let comments = content.comments;
   const setContentState = useSetRecoilState(contentState);
   const [likedComments, setLikedComments] = useState<string[]>([]);
 
   const handleLikeClick = async (id: any) => {
     try {
+      if (userId === null) {
+        alert("Please log in");
+        return;
+      }
       let response: any = await axios({
         method: "POST",
         url: "api/user/likeComment",
         data: {
-          userId: "789", //change later
+          userId: userId, //change later
           commentId: id,
         },
       });
@@ -53,6 +64,7 @@ export default function Comments() {
       alert("An error occurred. Please try again later.");
     }
   };
+  console.log("user email from comments is...", userEmail);
 
   if (comments) {
     return (
@@ -63,10 +75,22 @@ export default function Comments() {
               key={comment.id}
               className="flex justify-between p-2 m-2 rounded-lg bg-[#0e0e0e] hover:bg-[#1f1f1f]"
             >
-              <div>{comment.comment}</div>
               <div className="flex">
+                <div>
+                  <div className="flex justify-center p-2 m-2 h-10 w-10 bg-green-600 text-white rounded-full">
+                    <div>{comment.authorUsername?.slice(0, 1)}</div>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-700 p-1 m-1">
+                    @{comment.authorUsername}
+                  </div>
+                  <div className="p-2">{comment.comment}</div>
+                </div>
+              </div>
+              <div className="flex items-center">
                 <div
-                  className="p-2 rounded-full hover:bg-[#242424] hover:cursor-pointer"
+                  className="p-2 rounded-full hover:cursor-pointer"
                   onClick={() => {
                     handleLikeClick(comment.id);
                   }}

@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     try {
-      const { userId, commentId, comment, contentLink } = req.body;
+      const { authorUsername, commentId, comment, contentLink } = req.body;
 
       //zod validation for name
       let validComment;
@@ -26,14 +26,14 @@ export default async function handler(
         newComment = await prisma.post.update({
           where: {
             id: commentId,
-            authorId: userId,
+            authorUsername: authorUsername,
             contentLink: contentLink,
             published: true,
           },
           data: {
             comment: validComment,
             contentLink: contentLink,
-            authorId: userId,
+            authorUsername: authorUsername,
           },
         });
       } else {

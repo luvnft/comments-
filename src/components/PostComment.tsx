@@ -2,9 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 import { contentState } from "@/store/atoms/contentState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
+import { userIdSelector } from "@/store/selectors/userDetailsSelector";
+import { usernameSelector } from "@/store/selectors/userDetailsSelector";
 
 export default function PostComment() {
   const content = useRecoilValue(contentState);
+  const userID = useRecoilValue(userIdSelector);
+  const username = useRecoilValue(usernameSelector);
+
   let comments: any;
   if (content.comments) {
     comments = content.comments.slice(); // Create a shallow copy of the comments array
@@ -22,7 +27,7 @@ export default function PostComment() {
         data: {
           comment: comment,
           contentLink: content.rootUrl,
-          authorId: "123",
+          authorUsername: username,
         },
       });
       //   console.log("comments right now from postcomment....", comments);
@@ -41,7 +46,13 @@ export default function PostComment() {
       console.log(e);
     }
   };
-  return (
+  console.log("userId from post comment is ...", userID);
+
+  return userID === null ? (
+    <div className=" p-2 m-2 rounded-lg bg-[#2f2f2f] hover:bg-[#1f1f1f]">
+      Log in to comment
+    </div>
+  ) : (
     <div>
       <input
         className="p-2 m-2 text-black w-2/3"

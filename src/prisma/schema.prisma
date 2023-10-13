@@ -11,15 +11,15 @@ datasource db {
 }
 
 model Post {
-  id          String   @id @default(cuid())
-  comment     String
-  contentLink String
-  published   Boolean  @default(true)
-  author      User?    @relation(fields: [authorId], references: [id])
-  authorId    String?
-  likes       Like[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(cuid())
+  comment        String
+  contentLink    String
+  published      Boolean  @default(true)
+  author         User?    @relation(fields: [authorUsername], references: [username])
+  authorUsername String?
+  likes          Like[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model User {
