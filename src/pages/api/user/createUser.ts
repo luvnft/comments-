@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/lib/prisma";
 import { z } from "zod";
+import { generateRandomString } from "@/lib/generateRandomString";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,8 +9,24 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      console.log("creating new user...");
-      const { id, email, name, username } = req.body;
+      const { email, id, publicAddress } = req.body;
+
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          id: id,
+          email: email,
+        },
+        include: { likes: true, followers: true, followees: true },
+      });
+
+      if (existingUser) {
+        return res
+          .status(201)
+          .json({ message: "user already exists", user: existingUser });
+      }
+
+      let name = email.split("@")[0];
+      let username = name.concat(generateRandomString(6));
 
       //zod validation for name
       let validName;
@@ -41,7 +58,9 @@ export default async function handler(
           email: email,
           name: validName,
           username: validUsername,
+          publicAddress: publicAddress,
         },
+        include: { likes: true, followers: true, followees: true },
       });
 
       res.status(201).json({

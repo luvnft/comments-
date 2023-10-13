@@ -23,18 +23,19 @@ model Post {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  name        String?
-  email       String?  @unique
-  username    String?  @unique
-  isVerified  Boolean  @default(false)
-  isActivated Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  posts       Post[]
-  likes       Like[]
-  followers   Follow[] @relation("UserFollowees")
-  followees   Follow[] @relation("UserFollowers")
+  id            String   @id @default(cuid())
+  name          String?
+  email         String?  @unique
+  username      String?  @unique
+  isVerified    Boolean  @default(false)
+  isActivated   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  posts         Post[]
+  likes         Like[]
+  followers     Follow[] @relation("UserFollowees")
+  followees     Follow[] @relation("UserFollowers")
+  publicAddress String?
 }
 
 model Like {

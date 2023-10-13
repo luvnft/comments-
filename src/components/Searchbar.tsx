@@ -71,7 +71,7 @@ export default function Searchbar() {
     <div>
       <input
         placeholder="insert link here"
-        className="text-black"
+        className="text-black w-80 p-2 m-2"
         onChange={(e) => {
           setContentState({
             isLoading: true,
@@ -83,7 +83,9 @@ export default function Searchbar() {
           });
         }}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button className="bg-amber-600 rounded-xl p-2" onClick={handleSearch}>
+        Search
+      </button>
     </div>
   );
 }

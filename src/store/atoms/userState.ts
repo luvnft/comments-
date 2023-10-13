@@ -5,6 +5,13 @@ export const userState = atom<{
   email: string | null;
   role: string | null;
   id: string | null;
+  username: string | null;
+  isVerified: boolean | null;
+  isActivated: boolean | null;
+  likes: any;
+  followers: any;
+  followees: any;
+  publicAddress: string | null;
 }>({
   key: "userState",
   default: {
@@ -12,5 +19,12 @@ export const userState = atom<{
     email: null,
     role: "user",
     id: null,
+    username: null,
+    isVerified: null,
+    isActivated: null,
+    likes: null,
+    followers: null,
+    followees: null,
+    publicAddress: null,
   },
 });

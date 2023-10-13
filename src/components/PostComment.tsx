@@ -44,11 +44,18 @@ export default function PostComment() {
   return (
     <div>
       <input
+        className="p-2 m-2 text-black w-2/3"
+        placeholder="write your comment here"
         onChange={(e) => {
           setComment(e.target.value);
         }}
       />
-      <button onClick={handlePostComment}>Post comment</button>
+      <button
+        onClick={handlePostComment}
+        className="bg-amber-600 rounded-xl p-2"
+      >
+        Post comment
+      </button>
     </div>
   );
 }

@@ -15,7 +15,7 @@ export default function ContentCard() {
   console.log("baseURL from ContentCard...", content.rootUrl);
 
   return (
-    <div>
+    <div className="p-2 m-2">
       {content.source === "YouTube" && (
         <div>
           <YouTube videoId={content.contentId || ""} />
@@ -36,9 +36,9 @@ export default function ContentCard() {
           <FacebookEmbed url={content.link || ""} width={325} />
         </div>
       )}
-      <div>{content.source}</div>
-      <div>{content.link}</div>
-      <div>{content.contentId}</div>
+      <div>Source: {content.source}</div>
+      {/* <div>{content.link}</div>
+      <div>{content.contentId}</div> */}
     </div>
   );
 }
