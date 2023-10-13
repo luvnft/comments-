@@ -17,6 +17,7 @@ export default async function handler(
           published: true,
           contentLink: baseURL,
         },
+        include: { likes: true },
       });
 
       res.status(200).json({

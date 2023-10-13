@@ -28,7 +28,7 @@ export default async function handler(
         });
 
         // Associate the new like with the user
-        await prisma.user.update({
+        const updatedUser = await prisma.user.update({
           where: { id: userId },
           data: {
             likes: {
@@ -40,7 +40,7 @@ export default async function handler(
         });
 
         // Associate the new like with the post
-        await prisma.post.update({
+        const updatedPost = await prisma.post.update({
           where: { id: commentId },
           data: {
             likes: {
@@ -49,8 +49,12 @@ export default async function handler(
               },
             },
           },
+          include: { likes: true },
         });
-        res.status(200).json({ message: "Like created successfully." });
+        res.status(200).json({
+          message: "Like created successfully.",
+          updatedComment: updatedPost,
+        });
       }
     } catch (error) {
       console.log(error);

@@ -29,6 +29,7 @@ export default async function handler(
             contentLink: contentLink,
             authorId: authorId,
           },
+          include: { likes: true },
         });
       } else {
         res.status(400).json({ message: "Invalid comment" });

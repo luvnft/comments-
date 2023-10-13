@@ -1,24 +1,45 @@
 import axios from "axios";
 import { useState } from "react";
 import { contentState } from "@/store/atoms/contentState";
-import { useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 
 export default function PostComment() {
   const content = useRecoilValue(contentState);
+  let comments: any;
+  if (content.comments) {
+    comments = content.comments.slice(); // Create a shallow copy of the comments array
+  }
+  //   let comments: any = [];
+  const setContentState = useSetRecoilState(contentState);
 
   const [comment, setComment] = useState<string>();
 
   const handlePostComment = async () => {
-    const response = await axios({
-      method: "POST",
-      url: "/api/comments/postcomment",
-      data: {
-        comment: comment,
-        contentLink: content.rootUrl,
-        authorId: "123",
-      },
-    });
-    console.log(response);
+    try {
+      const response = await axios({
+        method: "POST",
+        url: "/api/comments/postcomment",
+        data: {
+          comment: comment,
+          contentLink: content.rootUrl,
+          authorId: "123",
+        },
+      });
+      //   console.log("comments right now from postcomment....", comments);
+      //   console.log("response after posting comment...", response);
+      //   console.log("response.data.comment is ....", response.data.comment);
+      //   comments.push(response.data.comment);
+      //   console.log("new comments array...", comments);
+      let updatedComments = [...comments, response.data.comment];
+
+      setContentState((prevVideoState) => ({
+        ...prevVideoState,
+        comments: updatedComments,
+      }));
+    } catch (e) {
+      alert("Error occured ");
+      console.log(e);
+    }
   };
   return (
     <div>
