@@ -6,11 +6,35 @@ import {
   userIdSelector,
   userEmailSelector,
 } from "@/store/selectors/userDetailsSelector";
+import { Magic } from "magic-sdk";
+import { SolanaExtension } from "@magic-ext/solana";
+import * as web3 from "@solana/web3.js";
+
+const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
+const RPC_URL =
+  "https://quick-wispy-putty.solana-devnet.discover.quiknode.pro/096b8d81216c78e4382b64e8dfdcfa1675fc03e4/";
+// const rpcUrl = "https://api.devnet.solana.com";
+let magic: any = null;
+const likeAmount = 10000;
+const destinationAddress = "FsXQZEwj58NBy5swzWTKTkeeeJhS98UMLNjxDCwPXUs8";
+
+if (typeof window !== "undefined") {
+  magic = new Magic(MAGIC_LINK_API_KEY || "", {
+    extensions: [
+      new SolanaExtension({
+        rpcUrl: RPC_URL,
+      }),
+    ],
+  });
+}
 
 export default function Comments() {
   const content = useRecoilValue(contentState);
   const userId = useRecoilValue(userIdSelector);
   const userEmail = useRecoilValue(userEmailSelector);
+  const [sendingTransaction, setSendingTransaction] = useState(false);
+
+  console.log("RPC_URL is ...", RPC_URL);
 
   let comments = content.comments;
   const setContentState = useSetRecoilState(contentState);
@@ -33,6 +57,7 @@ export default function Comments() {
       if (response.status === 200) {
         // Update the liked comment IDs with the new ID
         setLikedComments((prevIds) => [...prevIds, id]);
+        handleTransaction();
       }
 
       // Check if the response indicates an error
@@ -64,8 +89,55 @@ export default function Comments() {
       alert("An error occurred. Please try again later.");
     }
   };
-  console.log("user email from comments is...", userEmail);
 
+  const handleTransaction = async () => {
+    setSendingTransaction(true);
+    const metadata = await magic.user.getMetadata();
+    const recipientPubKey = new web3.PublicKey(destinationAddress);
+    // const payer = new web3.PublicKey(metadata.publicAddress);
+    const payer = "6Vjc8ywnEjVzhfGyCRpFp75zADFE91S8hMZQKhs6TdRj";
+    let base58publicKey = new web3.PublicKey(payer);
+
+    const connection = new web3.Connection(RPC_URL);
+
+    const hash = await connection.getLatestBlockhash();
+    const blockHeight = await connection.getBlockHeight();
+    const lastValidBlockHeight = blockHeight + 5; //about 2 seconds
+
+    let transactionMagic = new web3.Transaction({
+      blockhash: hash.blockhash,
+      feePayer: base58publicKey,
+      lastValidBlockHeight: lastValidBlockHeight,
+    });
+
+    const transaction = web3.SystemProgram.transfer({
+      fromPubkey: base58publicKey,
+      toPubkey: recipientPubKey,
+      lamports: likeAmount,
+    });
+
+    transactionMagic.add(...[transaction]);
+
+    const serializeConfig = {
+      requireAllSignatures: false,
+      verifySignatures: true,
+    };
+
+    const signedTransaction = await magic.solana.signTransaction(
+      transactionMagic,
+      serializeConfig
+    );
+
+    console.log("Check your Signed Transaction in console!");
+    console.log("Signed transaction", signedTransaction);
+
+    //Now to send transaction
+    const tx = web3.Transaction.from(signedTransaction.rawTransaction);
+    const signature = await connection.sendRawTransaction(tx.serialize());
+    console.log("here is the sent transaction signature", signature);
+
+    setSendingTransaction(false);
+  };
   if (comments) {
     return (
       <div>

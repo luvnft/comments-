@@ -12,6 +12,7 @@
     "@magic-ext/solana": "^16.1.1",
     "@magic-sdk/admin": "^2.0.1",
     "@prisma/client": "^5.4.1",
+    "@solana/web3.js": "^1.87.1",
     "axios": "^1.5.1",
     "magic-sdk": "^20.1.1",
     "next": "13.5.4",
