@@ -12,7 +12,8 @@ import {
 } from "@/store/selectors/userDetailsSelector";
 
 const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
-const RPC_URL = process.env.SOLANA_RPC_URL || "";
+const RPC_URL =
+  "https://quick-wispy-putty.solana-devnet.discover.quiknode.pro/096b8d81216c78e4382b64e8dfdcfa1675fc03e4/";
 // const rpcUrl = "https://api.devnet.solana.com";
 let magic: any = null;
 
@@ -64,25 +65,51 @@ export default function Navbar() {
           },
         });
         if (createUserResponse) {
-          setUserState({
-            isLoading: false,
-            email: createUserResponse.data.user.email,
-            role: "user",
-            id: createUserResponse.data.user.id,
-            username: createUserResponse.data.user.username,
-            isVerified: createUserResponse.data.user.isVerified,
-            isActivated: createUserResponse.data.user.isActivated,
-            likes: createUserResponse.data.user.likes,
-            followers: createUserResponse.data.user.followers,
-            followees: createUserResponse.data.user.followees,
-            publicAddress: createUserResponse.data.user.publicAddress,
+          const getFollows = await axios({
+            method: "GET",
+            url: "/api/user/getFollows",
+            params: {
+              userId: createUserResponse.data.user.id,
+            },
           });
+          if (getFollows) {
+            setUserState({
+              isLoading: false,
+              email: createUserResponse.data.user.email,
+              role: "user",
+              id: createUserResponse.data.user.id,
+              username: createUserResponse.data.user.username,
+              isVerified: createUserResponse.data.user.isVerified,
+              isActivated: createUserResponse.data.user.isActivated,
+              likes: createUserResponse.data.user.likes,
+              followers: getFollows.data.followers,
+              followees: getFollows.data.following,
+              publicAddress: createUserResponse.data.user.publicAddress,
+              balance: null,
+            });
+          } else {
+            setUserState({
+              isLoading: false,
+              email: createUserResponse.data.user.email,
+              role: "user",
+              id: createUserResponse.data.user.id,
+              username: createUserResponse.data.user.username,
+              isVerified: createUserResponse.data.user.isVerified,
+              isActivated: createUserResponse.data.user.isActivated,
+              likes: createUserResponse.data.user.likes,
+              followers: null,
+              followees: null,
+              publicAddress: createUserResponse.data.user.publicAddress,
+              balance: null,
+            });
+          }
+          setIsLoggedIn(true);
         }
 
         console.log("metadata from useEffect in navbar....", metadata); //remove later
       }
     });
-  }, [isLoggedIn]);
+  }, []);
 
   const handleLogin = async () => {
     console.log("handling log in....");
@@ -106,19 +133,44 @@ export default function Navbar() {
       });
 
       if (createUserResponse) {
-        setUserState({
-          isLoading: false,
-          email: createUserResponse.data.user.email,
-          role: "user",
-          id: createUserResponse.data.user.id,
-          username: createUserResponse.data.user.username,
-          isVerified: createUserResponse.data.user.isVerified,
-          isActivated: createUserResponse.data.user.isActivated,
-          likes: createUserResponse.data.user.likes,
-          followers: createUserResponse.data.user.followers,
-          followees: createUserResponse.data.user.followees,
-          publicAddress: createUserResponse.data.user.publicAddress,
+        const getFollows = await axios({
+          method: "GET",
+          url: "/api/user/getFollows",
+          params: {
+            userId: createUserResponse.data.user.id,
+          },
         });
+        if (getFollows) {
+          setUserState({
+            isLoading: false,
+            email: createUserResponse.data.user.email,
+            role: "user",
+            id: createUserResponse.data.user.id,
+            username: createUserResponse.data.user.username,
+            isVerified: createUserResponse.data.user.isVerified,
+            isActivated: createUserResponse.data.user.isActivated,
+            likes: createUserResponse.data.user.likes,
+            followers: getFollows.data.followers,
+            followees: getFollows.data.user.following,
+            publicAddress: createUserResponse.data.user.publicAddress,
+            balance: null,
+          });
+        } else {
+          setUserState({
+            isLoading: false,
+            email: createUserResponse.data.user.email,
+            role: "user",
+            id: createUserResponse.data.user.id,
+            username: createUserResponse.data.user.username,
+            isVerified: createUserResponse.data.user.isVerified,
+            isActivated: createUserResponse.data.user.isActivated,
+            likes: createUserResponse.data.user.likes,
+            followers: null,
+            followees: null,
+            publicAddress: createUserResponse.data.user.publicAddress,
+            balance: null,
+          });
+        }
         setIsLoggedIn(true);
       }
 
@@ -155,6 +207,7 @@ export default function Navbar() {
       followers: null,
       followees: null,
       publicAddress: null,
+      balance: null,
     });
     setIsLoggedIn(false);
     setIsModalOpen(false);
@@ -172,7 +225,12 @@ export default function Navbar() {
   return isLoggedIn ? (
     <div className="flex justify-between p-5">
       <div>
-        <div className="flex font-extrabold text-xl">
+        <div
+          className="flex font-extrabold text-xl hover:cursor-pointer"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
           <div>commentary</div>
           <div className="text-amber-600">.</div>
         </div>
@@ -213,7 +271,12 @@ export default function Navbar() {
   ) : (
     <div className="flex justify-between p-5">
       <div>
-        <div className="flex font-extrabold text-xl">
+        <div
+          className="flex font-extrabold text-xl hover:cursor-pointer"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
           <div>commentary</div>
           <div className="text-amber-600">.</div>
         </div>

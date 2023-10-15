@@ -16,13 +16,23 @@ import {
 } from "@/lib/getBaseUrl";
 import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Searchbar() {
+  const router = useRouter();
   const setContentState = useSetRecoilState(contentState);
   const content = useRecoilValue(contentState);
   const [currentLink, setCurrentLink] = useState<string>();
 
-  const handleSearch = async (link: string | null) => {
+  const handleSearch = async (inputString: string | null) => {
+    if (inputString && inputString[0] === "@") {
+      router.push(`/user/${inputString.slice(1)}`);
+    } else {
+      handleLinkSearch(inputString);
+    }
+  };
+
+  const handleLinkSearch = async (link: string | null) => {
     setContentState({
       isLoading: true,
       link: link,

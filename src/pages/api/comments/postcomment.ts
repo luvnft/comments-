@@ -8,7 +8,8 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { comment, contentLink, authorUsername } = req.body;
+      const { comment, contentLink, authorUsername, authorPublicAddress } =
+        req.body;
 
       //zod validation for name
       let validComment;
@@ -28,6 +29,7 @@ export default async function handler(
             comment: validComment,
             contentLink: contentLink,
             authorUsername: authorUsername,
+            authorPublicAddress: authorPublicAddress,
           },
           include: { likes: true },
         });

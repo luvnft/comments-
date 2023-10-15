@@ -18,6 +18,9 @@ export default async function handler(
           contentLink: baseURL,
         },
         include: { likes: true },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
 
       res.status(200).json({

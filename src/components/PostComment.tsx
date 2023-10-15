@@ -4,11 +4,13 @@ import { contentState } from "@/store/atoms/contentState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userIdSelector } from "@/store/selectors/userDetailsSelector";
 import { usernameSelector } from "@/store/selectors/userDetailsSelector";
+import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 
 export default function PostComment() {
   const content = useRecoilValue(contentState);
   const userID = useRecoilValue(userIdSelector);
   const username = useRecoilValue(usernameSelector);
+  const authorPublicAddress = useRecoilValue(publicAddressSelector);
 
   let comments: any;
   if (content.comments) {
@@ -28,6 +30,7 @@ export default function PostComment() {
           comment: comment,
           contentLink: content.rootUrl,
           authorUsername: username,
+          authorPublicAddress: authorPublicAddress,
         },
       });
       //   console.log("comments right now from postcomment....", comments);
@@ -35,7 +38,7 @@ export default function PostComment() {
       //   console.log("response.data.comment is ....", response.data.comment);
       //   comments.push(response.data.comment);
       //   console.log("new comments array...", comments);
-      let updatedComments = [...comments, response.data.comment];
+      let updatedComments = [response.data.comment, ...comments];
 
       setContentState((prevVideoState) => ({
         ...prevVideoState,

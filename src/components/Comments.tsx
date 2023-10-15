@@ -9,14 +9,14 @@ import {
 import { Magic } from "magic-sdk";
 import { SolanaExtension } from "@magic-ext/solana";
 import * as web3 from "@solana/web3.js";
+import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 
 const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
 const RPC_URL =
   "https://quick-wispy-putty.solana-devnet.discover.quiknode.pro/096b8d81216c78e4382b64e8dfdcfa1675fc03e4/";
 // const rpcUrl = "https://api.devnet.solana.com";
 let magic: any = null;
-const likeAmount = 10000;
-const destinationAddress = "FsXQZEwj58NBy5swzWTKTkeeeJhS98UMLNjxDCwPXUs8";
+const likeAmount = 10000; // in lamports
 
 if (typeof window !== "undefined") {
   magic = new Magic(MAGIC_LINK_API_KEY || "", {
@@ -32,7 +32,8 @@ export default function Comments() {
   const content = useRecoilValue(contentState);
   const userId = useRecoilValue(userIdSelector);
   const userEmail = useRecoilValue(userEmailSelector);
-  const [sendingTransaction, setSendingTransaction] = useState(false);
+  //   const [sendingTransaction, setSendingTransaction] = useState(false);
+  const userPublicAddress = useRecoilValue(publicAddressSelector);
 
   console.log("RPC_URL is ...", RPC_URL);
 
@@ -40,24 +41,32 @@ export default function Comments() {
   const setContentState = useSetRecoilState(contentState);
   const [likedComments, setLikedComments] = useState<string[]>([]);
 
-  const handleLikeClick = async (id: any) => {
+  const handleLikeClick = async (id: any, authorPublicAddress: any) => {
     try {
       if (userId === null) {
         alert("Please log in");
         return;
       }
+      if (userPublicAddress === authorPublicAddress) {
+        alert("Cannot like your own comments");
+        return;
+      }
+
+      //transaction may fail but the like is still added in the db - fix later
       let response: any = await axios({
         method: "POST",
         url: "api/user/likeComment",
         data: {
           userId: userId, //change later
           commentId: id,
+          //   publicAddress: userPublicAddress,
+          //   authorPublicAddress: authorPublicAddress,
         },
       });
       if (response.status === 200) {
         // Update the liked comment IDs with the new ID
         setLikedComments((prevIds) => [...prevIds, id]);
-        handleTransaction();
+        handleTransaction(authorPublicAddress);
       }
 
       // Check if the response indicates an error
@@ -90,53 +99,59 @@ export default function Comments() {
     }
   };
 
-  const handleTransaction = async () => {
-    setSendingTransaction(true);
-    const metadata = await magic.user.getMetadata();
-    const recipientPubKey = new web3.PublicKey(destinationAddress);
-    // const payer = new web3.PublicKey(metadata.publicAddress);
-    const payer = "6Vjc8ywnEjVzhfGyCRpFp75zADFE91S8hMZQKhs6TdRj";
-    let base58publicKey = new web3.PublicKey(payer);
+  const handleTransaction = async (authorPublicAddress: any) => {
+    try {
+      //   setSendingTransaction(true);
+      if (userPublicAddress === authorPublicAddress) {
+        alert("Cannot send transaction to yourself");
+        return;
+      }
+      let payer_base58publicKey = new web3.PublicKey(userPublicAddress || "");
+      let receiver_base58publicKey = new web3.PublicKey(authorPublicAddress);
 
-    const connection = new web3.Connection(RPC_URL);
+      const connection = new web3.Connection(RPC_URL);
 
-    const hash = await connection.getLatestBlockhash();
-    const blockHeight = await connection.getBlockHeight();
-    const lastValidBlockHeight = blockHeight + 5; //about 2 seconds
+      const hash = await connection.getLatestBlockhash();
+      const blockHeight = await connection.getBlockHeight();
+      const lastValidBlockHeight = blockHeight + 5; //about 2 seconds
 
-    let transactionMagic = new web3.Transaction({
-      blockhash: hash.blockhash,
-      feePayer: base58publicKey,
-      lastValidBlockHeight: lastValidBlockHeight,
-    });
+      let transactionMagic = new web3.Transaction({
+        blockhash: hash.blockhash,
+        feePayer: payer_base58publicKey,
+        lastValidBlockHeight: lastValidBlockHeight,
+      });
 
-    const transaction = web3.SystemProgram.transfer({
-      fromPubkey: base58publicKey,
-      toPubkey: recipientPubKey,
-      lamports: likeAmount,
-    });
+      const transaction = web3.SystemProgram.transfer({
+        fromPubkey: payer_base58publicKey,
+        toPubkey: receiver_base58publicKey,
+        lamports: likeAmount,
+      });
 
-    transactionMagic.add(...[transaction]);
+      transactionMagic.add(...[transaction]);
 
-    const serializeConfig = {
-      requireAllSignatures: false,
-      verifySignatures: true,
-    };
+      const serializeConfig = {
+        requireAllSignatures: false,
+        verifySignatures: true,
+      };
 
-    const signedTransaction = await magic.solana.signTransaction(
-      transactionMagic,
-      serializeConfig
-    );
+      const signedTransaction = await magic.solana.signTransaction(
+        transactionMagic,
+        serializeConfig
+      );
 
-    console.log("Check your Signed Transaction in console!");
-    console.log("Signed transaction", signedTransaction);
+      console.log("Check your Signed Transaction in console!");
+      console.log("Signed transaction", signedTransaction);
 
-    //Now to send transaction
-    const tx = web3.Transaction.from(signedTransaction.rawTransaction);
-    const signature = await connection.sendRawTransaction(tx.serialize());
-    console.log("here is the sent transaction signature", signature);
+      //Now to send transaction
+      const tx = web3.Transaction.from(signedTransaction.rawTransaction);
+      const signature = await connection.sendRawTransaction(tx.serialize());
+      console.log("here is the sent transaction signature", signature);
 
-    setSendingTransaction(false);
+      //   setSendingTransaction(false);
+    } catch (e) {
+      alert("Error sending transaction");
+      console.log("Error sending like transaction - ", e);
+    }
   };
   if (comments) {
     return (
@@ -164,7 +179,7 @@ export default function Comments() {
                 <div
                   className="p-2 rounded-full hover:cursor-pointer"
                   onClick={() => {
-                    handleLikeClick(comment.id);
+                    handleLikeClick(comment.id, comment.authorPublicAddress);
                   }}
                 >
                   <svg

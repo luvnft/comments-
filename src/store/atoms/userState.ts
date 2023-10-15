@@ -12,6 +12,7 @@ export const userState = atom<{
   followers: any;
   followees: any;
   publicAddress: string | null;
+  balance: any;
 }>({
   key: "userState",
   default: {
@@ -26,5 +27,6 @@ export const userState = atom<{
     followers: null,
     followees: null,
     publicAddress: null,
+    balance: null,
   },
 });

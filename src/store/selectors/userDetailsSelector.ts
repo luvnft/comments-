@@ -48,6 +48,13 @@ export const publicAddressSelector = selector({
   key: "followeesSelector",
   get: ({ get }) => {
     const state = get(userState);
-    return state.publicAddress;
+    return state.followees;
+  },
+});
+export const balanceSelector = selector({
+  key: "balanceSelector",
+  get: ({ get }) => {
+    const state = get(userState);
+    return state.balance;
   },
 });
