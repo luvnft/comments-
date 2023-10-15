@@ -7,7 +7,7 @@ import {
   userEmailSelector,
 } from "@/store/selectors/userDetailsSelector";
 import { Magic } from "magic-sdk";
-import { SolanaExtension } from "@magic-ext/solana";
+import { SolanaExtension } from "@magic-ext/solana"; // need fixes for typing here
 import * as web3 from "@solana/web3.js";
 import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 import { balanceSelector } from "@/store/selectors/userDetailsSelector";
