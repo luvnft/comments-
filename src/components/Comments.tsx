@@ -13,11 +13,8 @@ import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 import { balanceSelector } from "@/store/selectors/userDetailsSelector";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import { MAGIC_LINK_API_KEY, RPC_URL } from "@/constants";
 
-const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
-const RPC_URL =
-  "https://quick-wispy-putty.solana-devnet.discover.quiknode.pro/096b8d81216c78e4382b64e8dfdcfa1675fc03e4/";
-// const rpcUrl = "https://api.devnet.solana.com";
 let magic: any = null;
 const likeAmount = 10000; // in lamports
 
@@ -276,9 +273,11 @@ export default function Comments() {
           </div>
           <div className="text-black">3. Paste your address</div>
           <div className="text-black">4. Click on Devnet</div>
-          <div className="text-black mb-2 mt-2">
-            Once you see the success message you are all set. Let's go!
+          <div className="text-black">
+            5. Make sure you refresh the page once you have followed all the
+            steps.
           </div>
+          <div className="text-black mb-2 mt-2">You are all set. Let's go!</div>
           <button
             className="bg-amber-600 text-white rounded-lg p-3 w-full"
             onClick={closeFirstUserModal}

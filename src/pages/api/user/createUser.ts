@@ -63,7 +63,7 @@ export default async function handler(
         validUsername = usernameSchema.parse(username);
       }
 
-      // Create a new comment using Prisma
+      // Create a new user using Prisma
       const newUser = await prisma.user.create({
         data: {
           id: id,

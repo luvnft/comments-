@@ -29,7 +29,7 @@ export default function UserPage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("/api/user/getUserByUsername", {
+        const response = await axios.get("/api/getUserByUsername", {
           params: { username },
         });
         setUser(response.data.user);
@@ -68,7 +68,7 @@ export default function UserPage() {
       setIsFollowing(true);
       let newFollows = await axios({
         method: "GET",
-        url: "/api/user/getFollows",
+        url: "/api/getFollows",
         params: {
           userId: loggedInUserId,
         },
@@ -78,12 +78,9 @@ export default function UserPage() {
         followers: newFollows.data.followers,
         followees: newFollows.data.following,
       }));
-      const userUpdatedFollows = await axios.get(
-        "/api/user/getUserByUsername",
-        {
-          params: { username },
-        }
-      );
+      const userUpdatedFollows = await axios.get("/api/getUserByUsername", {
+        params: { username },
+      });
       setUser(userUpdatedFollows.data.user);
     } catch (e) {
       console.log(e);
@@ -105,7 +102,7 @@ export default function UserPage() {
       setIsFollowing(false);
       let newFollows = await axios({
         method: "GET",
-        url: "/api/user/getFollows",
+        url: "/api/getFollows",
         params: {
           userId: loggedInUserId,
         },
@@ -115,12 +112,9 @@ export default function UserPage() {
         followers: newFollows.data.followers,
         followees: newFollows.data.following,
       }));
-      const userUpdatedFollows = await axios.get(
-        "/api/user/getUserByUsername",
-        {
-          params: { username },
-        }
-      );
+      const userUpdatedFollows = await axios.get("/api/getUserByUsername", {
+        params: { username },
+      });
       setUser(userUpdatedFollows.data.user);
       setIsModalOpen(false);
     } catch (e) {
@@ -206,12 +200,14 @@ export default function UserPage() {
           Unfollow{" "}
         </button>
       </Modal>
+      <div className="min-h-[70vh]"></div>
     </div>
   ) : (
     <div className="flex">
       <div className="w-1/5 hidden md:block"></div>
       <div className="md:w-3/5 font-medium text-lg">User not found</div>
       <div className="w-1/5 hidden md:block"></div>
+      <div className="min-h-[70vh]"></div>
     </div>
   );
 }

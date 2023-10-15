@@ -18,7 +18,10 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { link } = req.body;
+      const { link, password } = req.body;
+      if (password !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
       console.log("link received is...", link);
       const baseURL = await getBaseURL(link);
       console.log(baseURL);

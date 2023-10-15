@@ -130,9 +130,11 @@ export default function PostComment() {
         </div>
         <div className="text-black">3. Paste your address</div>
         <div className="text-black">4. Click on Devnet</div>
-        <div className="text-black mb-2 mt-2">
-          Once you see the success message you are all set. Let's go!
+        <div className="text-black">
+          5. Make sure you refresh the page once you have followed all the
+          steps.
         </div>
+        <div className="text-black mb-2 mt-2">You are all set. Let's go!</div>
         <button
           className="bg-amber-600 text-white rounded-lg p-3 w-full"
           onClick={closeFirstUserModal}

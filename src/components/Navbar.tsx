@@ -11,11 +11,8 @@ import {
   publicAddressSelector,
 } from "@/store/selectors/userDetailsSelector";
 import * as web3 from "@solana/web3.js";
+import { MAGIC_LINK_API_KEY, RPC_URL } from "@/constants";
 
-const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
-const RPC_URL =
-  "https://quick-wispy-putty.solana-devnet.discover.quiknode.pro/096b8d81216c78e4382b64e8dfdcfa1675fc03e4/";
-// const rpcUrl = "https://api.devnet.solana.com";
 let magic: any = null;
 
 if (typeof window !== "undefined") {
@@ -69,7 +66,7 @@ export default function Navbar() {
         if (createUserResponse) {
           const getFollows = await axios({
             method: "GET",
-            url: "/api/user/getFollows",
+            url: "/api/getFollows",
             params: {
               userId: createUserResponse.data.user.id,
             },
@@ -153,7 +150,7 @@ export default function Navbar() {
       if (createUserResponse) {
         const getFollows = await axios({
           method: "GET",
-          url: "/api/user/getFollows",
+          url: "/api/getFollows",
           params: {
             userId: createUserResponse.data.user.id,
           },
@@ -259,68 +256,72 @@ export default function Navbar() {
   };
 
   return isLoggedIn ? (
-    <div className="flex justify-between p-5">
-      <div>
-        <div
-          className="flex font-extrabold text-xl hover:cursor-pointer"
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          <div>commentary</div>
-          <div className="text-amber-600">.</div>
+    <div>
+      <div className="flex justify-between p-5">
+        <div>
+          <div
+            className="flex font-extrabold text-xl hover:cursor-pointer"
+            onClick={() => {
+              router.push("/");
+            }}
+          >
+            <div>commentary</div>
+            <div className="text-amber-600">.</div>
+          </div>
+          <div className="text-xs text-gray-600">comment & earn</div>
         </div>
-        <div className="text-xs text-gray-600">comment & earn</div>
-      </div>
 
-      <div className="flex justify-normal">
-        <div className="flex items-center">
-          <input
-            type="email"
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-amber-600 text-black"
-            placeholder="Search user @abc1234"
-            id="userSearch"
-            onChange={(e) => {
-              setUserSearch(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                if (userSearch && userSearch[0] === "@") {
-                  router.push(`/user/${userSearch.slice(1)}`);
+        <div className="flex justify-normal">
+          <div className="flex items-center">
+            <input
+              type="email"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-amber-600 text-black"
+              placeholder="Search user @abc1234"
+              id="userSearch"
+              onChange={(e) => {
+                setUserSearch(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (userSearch && userSearch[0] === "@") {
+                    router.push(`/user/${userSearch.slice(1)}`);
+                  }
                 }
-              }
-            }}
-          />
-        </div>
-        <div className="flex items-center">
+              }}
+            />
+          </div>
+          <div className="flex items-center">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(user.publicAddress || "");
+                alert("Copied address to clipboard");
+              }}
+              id="publicAddress"
+              className="bg-[#212121] m-2 p-2 rounded-lg hover:cursor-pointer hover:bg-[#2d2d2d]"
+            >
+              {user.publicAddress?.slice(0, 4)}...
+              {user.publicAddress?.slice(-4)}
+            </button>
+          </div>
+          <div className="flex items-center">
+            <button
+              className="bg-[#212121] m-2 p-2 rounded-lg hover:cursor-pointer hover:bg-[#2d2d2d]"
+              onClick={() => {
+                router.push("/user/dashboard");
+              }}
+            >
+              Dashboard
+            </button>
+          </div>
           <button
-            onClick={() => {
-              navigator.clipboard.writeText(user.publicAddress || "");
-              alert("Copied address to clipboard");
-            }}
-            id="publicAddress"
-            className="bg-[#212121] m-2 p-2 rounded-lg hover:cursor-pointer hover:bg-[#2d2d2d]"
+            className="bg-amber-600 rounded-xl p-2 m-2"
+            onClick={handleLogout}
           >
-            {user.publicAddress?.slice(0, 4)}...{user.publicAddress?.slice(-4)}
+            Log Out
           </button>
         </div>
-        <div className="flex items-center">
-          <button
-            className="bg-[#212121] m-2 p-2 rounded-lg hover:cursor-pointer hover:bg-[#2d2d2d]"
-            onClick={() => {
-              router.push("/user/dashboard");
-            }}
-          >
-            Dashboard
-          </button>
-        </div>
-        <button
-          className="bg-amber-600 rounded-xl p-2 m-2"
-          onClick={handleLogout}
-        >
-          Log Out
-        </button>
       </div>
+      <hr className="border-t border-gray-700 my-3" />
     </div>
   ) : (
     <div className="flex justify-between p-5">

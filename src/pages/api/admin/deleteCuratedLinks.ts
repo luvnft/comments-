@@ -7,6 +7,10 @@ export default async function handler(
 ) {
   if (req.method === "DELETE") {
     try {
+      const { password } = req.body;
+      if (password !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
       await prisma.curatedLinks.deleteMany({});
 
       res.status(200).json({ message: "Deleted curatedLinks successfully." });

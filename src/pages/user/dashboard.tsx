@@ -13,10 +13,8 @@ import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 import { useEffect, useState } from "react";
 import { balanceSelector } from "@/store/selectors/userDetailsSelector";
 import { userState } from "@/store/atoms/userState";
+import { MAGIC_LINK_API_KEY, RPC_URL } from "@/constants";
 
-const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
-const RPC_URL =
-  "https://quick-wispy-putty.solana-devnet.discover.quiknode.pro/096b8d81216c78e4382b64e8dfdcfa1675fc03e4/";
 // const rpcUrl = "https://api.devnet.solana.com";
 let magic: any = null;
 
@@ -99,6 +97,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="w-1/5 hidden md:block"></div>
+      <div className="min-h-[70vh]"></div>
     </div>
   );
 }

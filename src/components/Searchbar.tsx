@@ -36,15 +36,6 @@ export default function Searchbar() {
 
   const handleLinkSearch = async (link: string | null) => {
     try {
-      //   setContentState({
-      //     isLoading: true,
-      //     link: link,
-      //     source: null,
-      //     rootUrl: null,
-      //     contentId: null,
-      //     comments: null,
-      //   });
-
       const linkSource = getSourceFromLink(content.link || "");
       let contentId: any = null;
       let baseURL: any = null;
@@ -81,7 +72,7 @@ export default function Searchbar() {
       //get comments
       let response: any = await axios({
         method: "GET",
-        url: "api/comments/getComments",
+        url: "api/getComments",
         params: {
           baseURL,
         },
@@ -120,7 +111,7 @@ export default function Searchbar() {
         </button>
       )}
       <input
-        placeholder="insert link here"
+        placeholder="insert youtube, instagram, twitter/X link here"
         className="text-black w-80 p-2 m-2"
         onChange={(e) => {
           setCurrentLink(e.target.value);

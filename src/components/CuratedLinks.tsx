@@ -38,7 +38,7 @@ export default function CuratedLinks() {
 
   return (
     <div>
-      <span className="text-xl font-medium mb-2 pb-5">Featured</span>
+      <div className="text-3xl font-medium mt-2 mb-2 pb-5">Featured</div>
       <div>
         {curatedLinks.links &&
           curatedLinks.links.map((data: any) => {
@@ -73,7 +73,7 @@ export default function CuratedLinks() {
                             //get comments
                             let response: any = await axios({
                               method: "GET",
-                              url: "api/comments/getComments",
+                              url: "api/getComments",
                               params: { baseURL },
                             });
                             console.log("comments fetched.....", response);

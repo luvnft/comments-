@@ -9,6 +9,7 @@ export default function Home() {
   return (
     <div>
       <LandingPage />
+      <div className="min-h-[50vh]"></div>
     </div>
   );
 }

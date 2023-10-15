@@ -11,12 +11,12 @@ export default async function handler(
       if (password !== process.env.ADMIN_PASSWORD) {
         return res.status(401).json({ message: "Invalid password" });
       }
-      await prisma.follow.deleteMany({});
+      await prisma.like.deleteMany({});
 
-      res.status(200).json({ message: "Deleted follows successfully." });
+      res.status(200).json({ message: "Deleted likes successfully." });
     } catch (error) {
       console.log(error);
-      res.status(400).json({ message: "Error deleting follows" });
+      res.status(400).json({ message: "Error deleting likes" });
     }
   } else {
     res.status(400).json({ message: "Invalid method" });
