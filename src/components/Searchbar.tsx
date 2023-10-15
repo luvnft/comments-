@@ -72,7 +72,7 @@ export default function Searchbar() {
       //get comments
       let response: any = await axios({
         method: "GET",
-        url: "api/getComments",
+        url: "/api/getComments",
         params: {
           baseURL,
         },

@@ -43,11 +43,8 @@ export default function CuratedLinks() {
         {curatedLinks.links &&
           curatedLinks.links.map((data: any) => {
             return (
-              <div className="flex justify-center">
-                <div
-                  key={data.id}
-                  className="p-5 mb-5 bg-[#0e0e0e] flex justify-center"
-                >
+              <div key={data.id} className="flex justify-center">
+                <div className="p-5 mb-5 bg-[#0e0e0e] flex justify-center">
                   <div>
                     <YouTube className="" videoId={data.contentId || ""} />
                     <div className="p-2 m-2">
