@@ -5,12 +5,14 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userIdSelector } from "@/store/selectors/userDetailsSelector";
 import { usernameSelector } from "@/store/selectors/userDetailsSelector";
 import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
+import { balanceSelector } from "@/store/selectors/userDetailsSelector";
 
 export default function PostComment() {
   const content = useRecoilValue(contentState);
   const userID = useRecoilValue(userIdSelector);
   const username = useRecoilValue(usernameSelector);
   const authorPublicAddress = useRecoilValue(publicAddressSelector);
+  const userBalance = useRecoilValue(balanceSelector);
 
   let comments: any;
   if (content.comments) {
@@ -22,6 +24,10 @@ export default function PostComment() {
   const [comment, setComment] = useState<string>();
 
   const handlePostComment = async () => {
+    if (userBalance < 10000000) {
+      alert("Balance is low. Please add minimum of 0.01 SOL to your account.");
+      return;
+    }
     try {
       const response = await axios({
         method: "POST",

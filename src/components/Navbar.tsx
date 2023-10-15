@@ -10,6 +10,7 @@ import {
   userIdSelector,
   publicAddressSelector,
 } from "@/store/selectors/userDetailsSelector";
+import * as web3 from "@solana/web3.js";
 
 const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
 const RPC_URL =
@@ -34,6 +35,7 @@ export default function Navbar() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [userSearch, setUserSearch] = useState("");
   // const [publicAddress, setPublicAddress] = useState("");
   // const [userMetadata, setUserMetadata] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -106,6 +108,22 @@ export default function Navbar() {
           setIsLoggedIn(true);
         }
 
+        try {
+          const publicKey = new web3.PublicKey(metadata.publicAddress || "");
+          const solana = new web3.Connection(RPC_URL);
+          const balance = await solana.getBalance(publicKey);
+
+          setUserState((prevUserState) => ({
+            ...prevUserState,
+            balance: balance,
+          }));
+
+          console.log("Nav-Bar - Balance set to...", balance);
+        } catch (error) {
+          // Handle the error, e.g., user not found
+          console.log(error);
+        }
+
         console.log("metadata from useEffect in navbar....", metadata); //remove later
       }
     });
@@ -140,6 +158,7 @@ export default function Navbar() {
             userId: createUserResponse.data.user.id,
           },
         });
+        console.log("getFollows object from handleLogin...", getFollows);
         if (getFollows) {
           setUserState({
             isLoading: false,
@@ -151,7 +170,7 @@ export default function Navbar() {
             isActivated: createUserResponse.data.user.isActivated,
             likes: createUserResponse.data.user.likes,
             followers: getFollows.data.followers,
-            followees: getFollows.data.user.following,
+            followees: getFollows.data.following,
             publicAddress: createUserResponse.data.user.publicAddress,
             balance: null,
           });
@@ -172,6 +191,23 @@ export default function Navbar() {
           });
         }
         setIsLoggedIn(true);
+      }
+
+      //setting balance here
+      try {
+        const publicKey = new web3.PublicKey(metadata.publicAddress || "");
+        const solana = new web3.Connection(RPC_URL);
+        const balance = await solana.getBalance(publicKey);
+
+        setUserState((prevUserState) => ({
+          ...prevUserState,
+          balance: balance,
+        }));
+
+        console.log("Nav-Bar - AfterLogIn - Balance set to...", balance);
+      } catch (error) {
+        // Handle the error, e.g., user not found
+        console.log(error);
       }
 
       console.log("CreateUserResponse is......", createUserResponse);
@@ -238,6 +274,24 @@ export default function Navbar() {
       </div>
 
       <div className="flex justify-normal">
+        <div className="flex items-center">
+          <input
+            type="email"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-amber-600 text-black"
+            placeholder="Search user @abc1234"
+            id="userSearch"
+            onChange={(e) => {
+              setUserSearch(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (userSearch && userSearch[0] === "@") {
+                  router.push(`/user/${userSearch.slice(1)}`);
+                }
+              }
+            }}
+          />
+        </div>
         <div className="flex items-center">
           <button
             onClick={() => {

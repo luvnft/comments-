@@ -8,11 +8,14 @@ import {
   YouTubeEmbed,
   TwitterEmbed,
 } from "react-social-media-embed";
+import { useEffect, useState } from "react";
 
 export default function ContentCard() {
   const content = useRecoilValue(contentState);
   console.log("contentID from ContentCard...", content.contentId);
   console.log("baseURL from ContentCard...", content.rootUrl);
+
+  useEffect(() => {}, [content]);
 
   return (
     <div className="p-2 m-2">

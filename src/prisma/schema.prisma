@@ -62,5 +62,6 @@ model Follow {
 model CuratedLinks {
   id        String   @id @default(cuid())
   rootUrl   String
+  contentId String?
   createdAt DateTime @default(now())
 }

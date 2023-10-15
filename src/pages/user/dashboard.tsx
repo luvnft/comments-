@@ -84,7 +84,7 @@ export default function Dashboard() {
         <div className="text-bold">@{username}</div>
         <div>
           <span>
-            Balance: <span>{balance} SOL</span>
+            Balance: <span>{balance} Lamports</span>
           </span>
         </div>
         <div>

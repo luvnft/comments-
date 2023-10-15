@@ -1,7 +1,7 @@
 import { Magic } from "magic-sdk";
-import { SolanaExtension } from "@magic-ext/solana";
+// import { SolanaExtension } from "@magic-ext/solana";
 import { useState, useEffect, useRef } from "react";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { userState } from "@/store/atoms/userState";
@@ -17,15 +17,15 @@ const RPC_URL =
 // const rpcUrl = "https://api.devnet.solana.com";
 let magic: any = null;
 
-if (typeof window !== "undefined") {
-  magic = new Magic(MAGIC_LINK_API_KEY || "", {
-    extensions: [
-      new SolanaExtension({
-        rpcUrl: RPC_URL,
-      }),
-    ],
-  });
-}
+// if (typeof window !== "undefined") {
+//   magic = new Magic(MAGIC_LINK_API_KEY || "", {
+//     extensions: [
+//       new SolanaExtension({
+//         rpcUrl: RPC_URL,
+//       }),
+//     ],
+//   });
+// }
 
 export default function InitUser() {
   return <></>;

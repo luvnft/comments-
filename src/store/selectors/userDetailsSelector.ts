@@ -45,10 +45,10 @@ export const followeesSelector = selector({
   },
 });
 export const publicAddressSelector = selector({
-  key: "followeesSelector",
+  key: "publicAddressSelector",
   get: ({ get }) => {
     const state = get(userState);
-    return state.followees;
+    return state.publicAddress;
   },
 });
 export const balanceSelector = selector({

@@ -4,7 +4,7 @@ import Comments from "@/components/Comments";
 export default function CommentSection() {
   return (
     <div>
-      <div>
+      <div className="">
         <PostComment />
       </div>
       <div>

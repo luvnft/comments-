@@ -49,6 +49,12 @@ export function getTwitterXBaseUrl(url: string) {
     }
   });
 }
+export function getYouTubeShortsBaseUrl(url: string) {
+  return new Promise<string | null>((resolve) => {
+    const match = url.match(/^(https:\/\/www\.youtube\.com\/shorts\/[\w-]+)/);
+    resolve(match ? match[1] : null);
+  });
+}
 
 export function getInstagramBaseUrl(url: string) {
   return new Promise((resolve, reject) => {

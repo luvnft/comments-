@@ -1,8 +1,9 @@
 import Searchbar from "@/components/Searchbar";
 import ContentCard from "@/components/ContentCard";
-import CommentSection from "./CommentSection";
+import CommentSection from "@/components/CommentSection";
 import { contentState } from "@/store/atoms/contentState";
 import { useRecoilValue } from "recoil";
+import CuratedLinks from "./CuratedLinks";
 
 export default function LandingPage() {
   const content = useRecoilValue(contentState);
@@ -11,11 +12,20 @@ export default function LandingPage() {
     <div className="flex">
       <div className="w-1/5 hidden md:block"></div>
       <div className="md:w-3/5">
-        <div className="flex justify-center">
+        <div className="">
           <Searchbar />
         </div>
-        <div>
-          <ContentCard />
+        {content.rootUrl && (
+          <div className="flex justify-center bg-[#0e0e0e]">
+            <ContentCard />
+          </div>
+        )}
+        <div
+          className={`${
+            content.rootUrl ? "hidden" : "" // Hide CuratedLinks if content.rootUrl is truthy
+          }`}
+        >
+          <CuratedLinks />
         </div>
         {content.rootUrl && (
           <div>

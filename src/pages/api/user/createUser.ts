@@ -75,7 +75,7 @@ export default async function handler(
         include: { likes: true, followers: true, followees: true },
       });
 
-      res.status(201).json({
+      res.status(200).json({
         message: "User created successfully",
         user: newUser,
       });

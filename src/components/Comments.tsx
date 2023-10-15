@@ -10,6 +10,7 @@ import { Magic } from "magic-sdk";
 import { SolanaExtension } from "@magic-ext/solana";
 import * as web3 from "@solana/web3.js";
 import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
+import { balanceSelector } from "@/store/selectors/userDetailsSelector";
 
 const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
 const RPC_URL =
@@ -34,6 +35,7 @@ export default function Comments() {
   const userEmail = useRecoilValue(userEmailSelector);
   //   const [sendingTransaction, setSendingTransaction] = useState(false);
   const userPublicAddress = useRecoilValue(publicAddressSelector);
+  const userBalance = useRecoilValue(balanceSelector);
 
   console.log("RPC_URL is ...", RPC_URL);
 
@@ -50,6 +52,11 @@ export default function Comments() {
       if (userPublicAddress === authorPublicAddress) {
         alert("Cannot like your own comments");
         return;
+      }
+      if (userBalance < 10000000) {
+        alert(
+          "Balance is low. Please add minimum of 0.01 SOL to your account."
+        );
       }
 
       //transaction may fail but the like is still added in the db - fix later

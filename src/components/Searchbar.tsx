@@ -6,6 +6,7 @@ import {
   getTweetIdFromUrl,
   getInstagramIdFromUrl,
   getFacebookContentIdFromUrl,
+  getYouTubeShortsContentId,
 } from "@/lib/getContentId";
 
 import {
@@ -13,6 +14,7 @@ import {
   getInstagramBaseUrl,
   getTwitterXBaseUrl,
   getYouTubeBaseUrl,
+  getYouTubeShortsBaseUrl,
 } from "@/lib/getBaseUrl";
 import axios from "axios";
 import { useState } from "react";
@@ -33,68 +35,104 @@ export default function Searchbar() {
   };
 
   const handleLinkSearch = async (link: string | null) => {
-    setContentState({
-      isLoading: true,
-      link: link,
-      source: null,
-      rootUrl: null,
-      contentId: null,
-      comments: null,
-    });
+    try {
+      //   setContentState({
+      //     isLoading: true,
+      //     link: link,
+      //     source: null,
+      //     rootUrl: null,
+      //     contentId: null,
+      //     comments: null,
+      //   });
 
-    const linkSource = getSourceFromLink(content.link || "");
-    let contentId: any = null;
-    let baseURL: any = null;
-    if (linkSource === "YouTube") {
-      contentId = getYouTubeVideoId(content.link || "");
-      baseURL = await getYouTubeBaseUrl(content.link || "");
-      console.log("here's the content id...", contentId);
-      console.log("here's the baseURL...", baseURL);
-    }
-    if (linkSource === "Twitter") {
-      contentId = getTweetIdFromUrl(content.link || "");
-      baseURL = await getTwitterXBaseUrl(content.link || "");
-      console.log("here's the content id...", contentId);
-      console.log("here's the baseURL...", baseURL);
-    }
-    if (linkSource === "Instagram") {
-      contentId = getInstagramIdFromUrl(content.link || "");
-      baseURL = await getInstagramBaseUrl(content.link || "");
-      console.log("here's the content id...", contentId);
-      console.log("here's the baseURL...", baseURL);
-    }
-    if (linkSource === "Facebook") {
-      contentId = getFacebookContentIdFromUrl(content.link || "");
-      baseURL = await getFacebookBaseUrl(content.link || "");
-      console.log("here's the content id...", contentId);
-      console.log("here's the baseURL...", baseURL);
-    }
+      const linkSource = getSourceFromLink(content.link || "");
+      let contentId: any = null;
+      let baseURL: any = null;
+      if (linkSource === "YouTube") {
+        if (content.link?.includes("youtube.com/shorts/")) {
+          contentId = await getYouTubeShortsContentId(content.link);
+          baseURL = await getYouTubeShortsBaseUrl(content.link);
+        } else {
+          contentId = await getYouTubeVideoId(content.link || "");
+          baseURL = await getYouTubeBaseUrl(content.link || "");
+        }
+        console.log("here's the content id...", contentId);
+        console.log("here's the baseURL...", baseURL);
+      }
+      if (linkSource === "Twitter") {
+        contentId = await getTweetIdFromUrl(content.link || "");
+        baseURL = await getTwitterXBaseUrl(content.link || "");
+        console.log("here's the content id...", contentId);
+        console.log("here's the baseURL...", baseURL);
+      }
+      if (linkSource === "Instagram") {
+        contentId = await getInstagramIdFromUrl(content.link || "");
+        baseURL = await getInstagramBaseUrl(content.link || "");
+        console.log("here's the content id...", contentId);
+        console.log("here's the baseURL...", baseURL);
+      }
+      if (linkSource === "Facebook") {
+        contentId = await getFacebookContentIdFromUrl(content.link || "");
+        baseURL = await getFacebookBaseUrl(content.link || "");
+        console.log("here's the content id...", contentId);
+        console.log("here's the baseURL...", baseURL);
+      }
 
-    //get comments
-    let response: any = await axios({
-      method: "GET",
-      url: "api/comments/getComments",
-      params: {
-        baseURL,
-      },
-    });
-    console.log("comments fetched.....", response);
-    setContentState((prevVideoState) => ({
-      ...prevVideoState,
-      source: linkSource,
-      contentId: contentId,
-      rootUrl: baseURL,
-      comments: response.data.comments,
-    }));
+      //get comments
+      let response: any = await axios({
+        method: "GET",
+        url: "api/comments/getComments",
+        params: {
+          baseURL,
+        },
+      });
+      console.log("comments fetched.....", response);
+      setContentState((prevVideoState) => ({
+        ...prevVideoState,
+        source: linkSource,
+        contentId: contentId,
+        rootUrl: baseURL,
+        comments: response.data.comments,
+      }));
+    } catch (e) {
+      alert("Could not fetch the link. Please re-check the link and try again");
+      console.log(e);
+    }
   };
 
   return (
     <div>
+      {content.rootUrl && (
+        <button
+          className="bg-[#1b1430] rounded-xl p-3 hover:bg-[#35275e]"
+          onClick={() => {
+            setContentState({
+              isLoading: true,
+              link: null,
+              source: null,
+              rootUrl: null,
+              contentId: null,
+              comments: null,
+            });
+          }}
+        >
+          Back
+        </button>
+      )}
       <input
         placeholder="insert link here"
         className="text-black w-80 p-2 m-2"
         onChange={(e) => {
           setCurrentLink(e.target.value);
+
+          setContentState({
+            isLoading: true,
+            link: e.target.value,
+            source: null,
+            rootUrl: null,
+            contentId: null,
+            comments: null,
+          });
         }}
       />
       <button
