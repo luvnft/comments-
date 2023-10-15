@@ -6,6 +6,7 @@ import { userIdSelector } from "@/store/selectors/userDetailsSelector";
 import { usernameSelector } from "@/store/selectors/userDetailsSelector";
 import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 import { balanceSelector } from "@/store/selectors/userDetailsSelector";
+import Modal from "react-modal";
 
 export default function PostComment() {
   const content = useRecoilValue(contentState);
@@ -13,6 +14,11 @@ export default function PostComment() {
   const username = useRecoilValue(usernameSelector);
   const authorPublicAddress = useRecoilValue(publicAddressSelector);
   const userBalance = useRecoilValue(balanceSelector);
+  const [isFirstUserModal, setIsFirstUserModal] = useState(false);
+
+  const closeFirstUserModal = () => {
+    setIsFirstUserModal(false);
+  };
 
   let comments: any;
   if (content.comments) {
@@ -25,7 +31,7 @@ export default function PostComment() {
 
   const handlePostComment = async () => {
     if (userBalance < 10000000) {
-      alert("Balance is low. Please add minimum of 0.01 SOL to your account.");
+      setIsFirstUserModal(true);
       return;
     }
     try {
@@ -76,6 +82,64 @@ export default function PostComment() {
       >
         Post comment
       </button>
+      <Modal
+        isOpen={isFirstUserModal}
+        onRequestClose={closeFirstUserModal}
+        contentLabel="First User Modal"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "400px",
+            padding: "20px",
+            background: "white",
+          },
+        }}
+        ariaHideApp={false}
+      >
+        <div className="flex font-extrabold text-xl mb-3 hover:cursor-pointer text-black">
+          <div>commentary</div>
+          <div className="text-amber-600">.</div>
+        </div>
+        <div className="mb-1 text-black font-semibold">
+          The only app where your comments can earn money.
+        </div>
+        <div className="text-black">
+          Your balance may be low. Follow these steps to get started.
+        </div>
+        <div className="text-black">
+          1. Copy your address from navigation menu.
+        </div>
+        <div className="text-black">
+          2. Go to{" "}
+          <a
+            className="text-black text-blue-700"
+            href="https://solfaucet.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            solfaucet.com
+          </a>
+        </div>
+        <div className="text-black">3. Paste your address</div>
+        <div className="text-black">4. Click on Devnet</div>
+        <div className="text-black mb-2 mt-2">
+          Once you see the success message you are all set. Let's go!
+        </div>
+        <button
+          className="bg-amber-600 text-white rounded-lg p-3 w-full"
+          onClick={closeFirstUserModal}
+        >
+          Close
+        </button>
+      </Modal>
     </div>
   );
 }

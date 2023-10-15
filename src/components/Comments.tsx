@@ -11,6 +11,8 @@ import { SolanaExtension } from "@magic-ext/solana";
 import * as web3 from "@solana/web3.js";
 import { publicAddressSelector } from "@/store/selectors/userDetailsSelector";
 import { balanceSelector } from "@/store/selectors/userDetailsSelector";
+import Modal from "react-modal";
+import { useRouter } from "next/router";
 
 const MAGIC_LINK_API_KEY = "pk_live_6A10D6F34E44BACC"; // publishable API key,access restricted from backend
 const RPC_URL =
@@ -30,18 +32,24 @@ if (typeof window !== "undefined") {
 }
 
 export default function Comments() {
+  const router = useRouter();
   const content = useRecoilValue(contentState);
   const userId = useRecoilValue(userIdSelector);
   const userEmail = useRecoilValue(userEmailSelector);
   //   const [sendingTransaction, setSendingTransaction] = useState(false);
   const userPublicAddress = useRecoilValue(publicAddressSelector);
   const userBalance = useRecoilValue(balanceSelector);
+  const [isFirstUserModal, setIsFirstUserModal] = useState(false);
 
   console.log("RPC_URL is ...", RPC_URL);
 
   let comments = content.comments;
   const setContentState = useSetRecoilState(contentState);
   const [likedComments, setLikedComments] = useState<string[]>([]);
+
+  const closeFirstUserModal = () => {
+    setIsFirstUserModal(false);
+  };
 
   const handleLikeClick = async (id: any, authorPublicAddress: any) => {
     try {
@@ -54,9 +62,8 @@ export default function Comments() {
         return;
       }
       if (userBalance < 10000000) {
-        alert(
-          "Balance is low. Please add minimum of 0.01 SOL to your account."
-        );
+        setIsFirstUserModal(true);
+        return;
       }
 
       //transaction may fail but the like is still added in the db - fix later
@@ -171,12 +178,22 @@ export default function Comments() {
             >
               <div className="flex">
                 <div>
-                  <div className="flex justify-center p-2 m-2 h-10 w-10 bg-green-600 text-white rounded-full">
+                  <div
+                    onClick={() => {
+                      router.push(`/user/${comment.authorUsername}`);
+                    }}
+                    className="flex justify-center p-2 m-2 h-10 w-10 bg-green-600 text-white rounded-full hover:cursor-pointer"
+                  >
                     <div>{comment.authorUsername?.slice(0, 1)}</div>
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-700 p-1 m-1">
+                  <div
+                    onClick={() => {
+                      router.push(`/user/${comment.authorUsername}`);
+                    }}
+                    className="text-sm text-gray-700 p-1 m-1 hover:cursor-pointer"
+                  >
                     @{comment.authorUsername}
                   </div>
                   <div className="p-2">{comment.comment}</div>
@@ -211,6 +228,64 @@ export default function Comments() {
             </div>
           );
         })}
+        <Modal
+          isOpen={isFirstUserModal}
+          onRequestClose={closeFirstUserModal}
+          contentLabel="First User Modal"
+          style={{
+            overlay: {
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            },
+            content: {
+              top: "50%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              marginRight: "-50%",
+              transform: "translate(-50%, -50%)",
+              maxWidth: "400px",
+              padding: "20px",
+              background: "white",
+            },
+          }}
+          ariaHideApp={false}
+        >
+          <div className="flex font-extrabold text-xl mb-3 hover:cursor-pointer text-black">
+            <div>commentary</div>
+            <div className="text-amber-600">.</div>
+          </div>
+          <div className="mb-1 text-black font-semibold">
+            The only app where your comments can earn money.
+          </div>
+          <div className="text-black">
+            Your balance may be low. Follow these steps to get started.
+          </div>
+          <div className="text-black">
+            1. Copy your address from navigation menu.
+          </div>
+          <div className="text-black">
+            2. Go to{" "}
+            <a
+              className="text-black text-blue-700"
+              href="https://solfaucet.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              solfaucet.com
+            </a>
+          </div>
+          <div className="text-black">3. Paste your address</div>
+          <div className="text-black">4. Click on Devnet</div>
+          <div className="text-black mb-2 mt-2">
+            Once you see the success message you are all set. Let's go!
+          </div>
+          <button
+            className="bg-amber-600 text-white rounded-lg p-3 w-full"
+            onClick={closeFirstUserModal}
+          >
+            Close
+          </button>
+        </Modal>
       </div>
     );
   }
