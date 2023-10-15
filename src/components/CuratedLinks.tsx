@@ -16,7 +16,7 @@ export default function CuratedLinks() {
       try {
         const response = await axios({
           method: "GET",
-          url: "api/getCurated",
+          url: "/api/getCurated",
           params: {
             take: 10,
             skip: 0,
@@ -73,7 +73,7 @@ export default function CuratedLinks() {
                             //get comments
                             let response: any = await axios({
                               method: "GET",
-                              url: "api/getComments",
+                              url: "/api/getComments",
                               params: { baseURL },
                             });
                             console.log("comments fetched.....", response);
