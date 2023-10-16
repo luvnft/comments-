@@ -8,13 +8,13 @@ export default async function handler(
 ) {
   if (req.method === "PUT") {
     try {
-      const { userId, commentId } = req.body;
+      const { authorUsername, commentId } = req.body;
 
       // Create a new comment using Prisma
       const newComment = await prisma.post.update({
         where: {
           id: commentId,
-          authorId: userId,
+          authorUsername: authorUsername,
         },
         data: {
           published: false,
