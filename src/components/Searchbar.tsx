@@ -41,8 +41,14 @@ export default function Searchbar() {
       let baseURL: any = null;
       if (linkSource === "YouTube") {
         if (content.link?.includes("youtube.com/shorts/")) {
-          contentId = await getYouTubeShortsContentId(content.link);
+          // contentId = await getYouTubeShortsContentId(content.link); // this function is not working - fix later
           baseURL = await getYouTubeShortsBaseUrl(content.link);
+
+          //makeshift contentId fetcher
+          const parts = baseURL.split("/shorts/");
+          if (parts.length === 2) {
+            contentId = parts[1];
+          }
         } else {
           contentId = await getYouTubeVideoId(content.link || "");
           baseURL = await getYouTubeBaseUrl(content.link || "");
@@ -99,7 +105,7 @@ export default function Searchbar() {
           onClick={() => {
             setContentState({
               isLoading: true,
-              link: null,
+              link: currentLink || "",
               source: null,
               rootUrl: null,
               contentId: null,

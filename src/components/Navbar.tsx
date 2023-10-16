@@ -136,7 +136,7 @@ export default function Navbar() {
 
       const cookieValue = `token=${idToken}; path=/`;
       document.cookie = cookieValue;
-
+      
       const createUserResponse = await axios({
         method: "POST",
         url: "/api/user/createUser",

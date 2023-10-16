@@ -66,7 +66,7 @@ export default function Comments() {
       //transaction may fail but the like is still added in the db - fix later
       let response: any = await axios({
         method: "POST",
-        url: "api/user/likeComment",
+        url: "/api/user/likeComment",
         data: {
           userId: userId, //change later
           commentId: id,
