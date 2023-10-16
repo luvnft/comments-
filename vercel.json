@@ -1,0 +1,11 @@
+{
+    "build": {
+      "commands": [
+        "prisma generate",
+        "npm install",
+        "npm run build"
+      ],
+      "use": "@vercel/node"
+    }
+  }
+  
