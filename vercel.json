@@ -1,11 +1,14 @@
 {
-    "build": {
-      "commands": [
-        "prisma generate",
-        "npm install",
-        "npm run build"
-      ],
-      "use": "@vercel/node"
-    }
+    "builds": [
+      {
+        "src": "prisma/schema.prisma",
+        "use": "@prisma/cli",
+        "config": { "generator": "client" }
+      },
+      {
+        "src": "package.json",
+        "use": "@now/node"
+      }
+    ]
   }
   
