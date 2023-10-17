@@ -46,7 +46,13 @@ export default function CuratedLinks() {
               <div key={data.id} className="flex justify-center">
                 <div className="p-5 mb-5 bg-[#0e0e0e] flex justify-center">
                   <div className="hidden sm:block">
-                    <YouTube videoId={data.contentId || ""} />
+                    <iframe
+                      id="ytplayer"
+                      width="640"
+                      height="360"
+                      src={`https://www.youtube.com/embed/${data.contentId}?autoplay=1`}
+                    ></iframe>
+                    {/* <YouTube videoId={data.contentId || ""} /> */}
                     <div className="p-2 m-2">
                       <button
                         className="bg-[#1b1430] rounded-xl p-3 hover:bg-[#35275e]"
@@ -78,15 +84,18 @@ export default function CuratedLinks() {
                           }
                         }}
                       >
-                        Click here to comment
+                        Go to comments section
                       </button>
                     </div>
                   </div>
                   <div className="sm:hidden">
-                    <YouTube
-                      className="w-auto"
-                      videoId={data.contentId || ""}
-                    />
+                    <iframe
+                      id="ytplayer"
+                      width="360"
+                      height="240"
+                      src={`https://www.youtube.com/embed/${data.contentId}?autoplay=1`}
+                    ></iframe>
+                    {/* <YouTube videoId={data.contentId || ""} /> */}
                     <div className="p-2 m-2">
                       <button
                         className="bg-[#1b1430] rounded-xl p-3 hover:bg-[#35275e]"
@@ -118,7 +127,7 @@ export default function CuratedLinks() {
                           }
                         }}
                       >
-                        Click here to comment
+                        Go to comments section
                       </button>
                     </div>
                   </div>
