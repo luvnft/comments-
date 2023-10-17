@@ -38,7 +38,9 @@ export default function CuratedLinks() {
 
   return (
     <div>
-      <div className="text-3xl font-medium mt-2 mb-2 pb-5">Featured</div>
+      <div className="text-3xl font-medium pl-1 ml-1 mt-2 mb-2 pb-5">
+        Featured
+      </div>
       <div>
         {curatedLinks.links &&
           curatedLinks.links.map((data: any) => {
@@ -50,7 +52,7 @@ export default function CuratedLinks() {
                       id="ytplayer"
                       width="640"
                       height="360"
-                      src={`https://www.youtube.com/embed/${data.contentId}?autoplay=1`}
+                      src={`https://www.youtube.com/embed/${data.contentId}`}
                     ></iframe>
                     {/* <YouTube videoId={data.contentId || ""} /> */}
                     <div className="p-2 m-2">
@@ -93,7 +95,7 @@ export default function CuratedLinks() {
                       id="ytplayer"
                       width="360"
                       height="240"
-                      src={`https://www.youtube.com/embed/${data.contentId}?autoplay=1`}
+                      src={`https://www.youtube.com/embed/${data.contentId}`}
                     ></iframe>
                     {/* <YouTube videoId={data.contentId || ""} /> */}
                     <div className="p-2 m-2">

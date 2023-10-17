@@ -22,10 +22,20 @@ export default function ContentCard() {
       {content.source === "YouTube" && (
         <div>
           <div className="hidden sm:block">
-            <YouTube videoId={content.contentId || ""} />
+            <iframe
+              id="ytplayer"
+              width="640"
+              height="360"
+              src={`https://www.youtube.com/embed/${content.contentId}`}
+            ></iframe>
           </div>
           <div className="sm:hidden">
-            <YouTube className="w-auto" videoId={content.contentId || ""} />
+            <iframe
+              id="ytplayer"
+              width="360"
+              height="240"
+              src={`https://www.youtube.com/embed/${content.contentId}`}
+            ></iframe>
           </div>
         </div>
       )}

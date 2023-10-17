@@ -101,7 +101,7 @@ export default function Searchbar() {
     <div>
       {content.rootUrl && (
         <button
-          className="bg-[#1b1430] rounded-xl p-3 hover:bg-[#35275e]"
+          className="bg-[#1b1430] rounded-xl p-2 m-1 hover:bg-[#35275e]"
           onClick={() => {
             setContentState({
               isLoading: true,
@@ -133,7 +133,7 @@ export default function Searchbar() {
         }}
       />
       <button
-        className="bg-amber-600 rounded-xl p-2"
+        className="bg-amber-600 rounded-xl p-2 m-1"
         onClick={() => {
           handleSearch(currentLink || null);
         }}
