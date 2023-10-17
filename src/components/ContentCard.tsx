@@ -21,7 +21,12 @@ export default function ContentCard() {
     <div className="p-2 m-2">
       {content.source === "YouTube" && (
         <div>
-          <YouTube videoId={content.contentId || ""} />
+          <div className="hidden sm:block">
+            <YouTube videoId={content.contentId || ""} />
+          </div>
+          <div className="sm:hidden">
+            <YouTube className="w-auto" videoId={content.contentId || ""} />
+          </div>
         </div>
       )}
       {content.source === "Twitter" && (

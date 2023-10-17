@@ -11,8 +11,8 @@ export default function LandingPage() {
   return (
     <div className="flex">
       <div className="w-1/5 hidden md:block"></div>
-      <div className="md:w-3/5">
-        <div className="">
+      <div className="md:w-3/5 max-w-full">
+        <div className="flex justify-center">
           <Searchbar />
         </div>
         {content.rootUrl && (

@@ -136,7 +136,7 @@ export default function Navbar() {
 
       const cookieValue = `token=${idToken}; path=/`;
       document.cookie = cookieValue;
-      
+
       const createUserResponse = await axios({
         method: "POST",
         url: "/api/user/createUser",
@@ -257,7 +257,7 @@ export default function Navbar() {
 
   return isLoggedIn ? (
     <div>
-      <div className="flex justify-between p-5">
+      <div className="sm:flex justify-between p-5">
         <div>
           <div
             className="flex font-extrabold text-xl hover:cursor-pointer"
@@ -314,7 +314,7 @@ export default function Navbar() {
             </button>
           </div>
           <button
-            className="bg-amber-600 rounded-xl p-2 m-2"
+            className="bg-amber-600 rounded-xl p-1 m-1"
             onClick={handleLogout}
           >
             Log Out

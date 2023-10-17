@@ -45,17 +45,52 @@ export default function CuratedLinks() {
             return (
               <div key={data.id} className="flex justify-center">
                 <div className="p-5 mb-5 bg-[#0e0e0e] flex justify-center">
-                  <div>
-                    <YouTube className="" videoId={data.contentId || ""} />
+                  <div className="hidden sm:block">
+                    <YouTube videoId={data.contentId || ""} />
                     <div className="p-2 m-2">
                       <button
                         className="bg-[#1b1430] rounded-xl p-3 hover:bg-[#35275e]"
                         onClick={async () => {
-                          // id        String   @id @default(cuid())
-                          // rootUrl   String
-                          // contentId String?
-                          // createdAt DateTime @default(now())
+                          setContentState({
+                            isLoading: true,
+                            link: data.rootUrl,
+                            source: "YouTube",
+                            rootUrl: data.rootUrl,
+                            contentId: data.contentId,
+                            comments: null,
+                          });
+                          let baseURL = data.rootUrl;
 
+                          try {
+                            //get comments
+                            let response: any = await axios({
+                              method: "GET",
+                              url: "/api/getComments",
+                              params: { baseURL },
+                            });
+                            console.log("comments fetched.....", response);
+                            setContentState((prevVideoState) => ({
+                              ...prevVideoState,
+                              comments: response.data.comments,
+                            }));
+                          } catch (e) {
+                            alert("Error fetching comments");
+                          }
+                        }}
+                      >
+                        Click here to comment
+                      </button>
+                    </div>
+                  </div>
+                  <div className="sm:hidden">
+                    <YouTube
+                      className="w-auto"
+                      videoId={data.contentId || ""}
+                    />
+                    <div className="p-2 m-2">
+                      <button
+                        className="bg-[#1b1430] rounded-xl p-3 hover:bg-[#35275e]"
+                        onClick={async () => {
                           setContentState({
                             isLoading: true,
                             link: data.rootUrl,
