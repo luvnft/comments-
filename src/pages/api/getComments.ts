@@ -9,7 +9,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       const { baseURL }: any = req.query;
-      console.log("baseURL received in getComment endpoint is...", baseURL);
+      // console.log("baseURL received in getComment endpoint is...", baseURL);
 
       // Get comments using Prisma
       const comments = await prisma.post.findMany({

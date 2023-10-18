@@ -120,7 +120,7 @@ export default function PostComment() {
         <div className="text-black">
           2. Go to{" "}
           <a
-            className="text-black text-blue-700"
+            className="text-blue-700"
             href="https://solfaucet.com"
             target="_blank"
             rel="noopener noreferrer"

@@ -19,6 +19,8 @@ model Post {
   authorUsername      String?
   authorAddress       User?    @relation(name: "authorAddress", fields: [authorPublicAddress], references: [publicAddress])
   authorPublicAddress String?
+  authorId            User?    @relation(name: "authorId", fields: [authorUniqueId], references: [id])
+  authorUniqueId      String?
   likes               Like[]
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -35,6 +37,7 @@ model User {
   updatedAt            DateTime @updatedAt
   posts                Post[]   @relation("authorUsername")
   postsWithAuthAddress Post[]   @relation("authorAddress")
+  postsWithAuthId      Post[]   @relation("authorId")
   likes                Like[]
   followers            Follow[] @relation("UserFollowees")
   followees            Follow[] @relation("UserFollowers")
