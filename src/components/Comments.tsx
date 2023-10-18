@@ -38,7 +38,7 @@ export default function Comments() {
   const userBalance = useRecoilValue(balanceSelector);
   const [isFirstUserModal, setIsFirstUserModal] = useState(false);
 
-  console.log("RPC_URL is ...", RPC_URL);
+  // console.log("RPC_URL is ...", RPC_URL);
 
   let comments = content.comments;
   const setContentState = useSetRecoilState(contentState);
@@ -150,8 +150,8 @@ export default function Comments() {
         serializeConfig
       );
 
-      console.log("Check your Signed Transaction in console!");
-      console.log("Signed transaction", signedTransaction);
+      // console.log("Check your Signed Transaction in console!");
+      // console.log("Signed transaction", signedTransaction);
 
       //Now to send transaction
       const tx = web3.Transaction.from(signedTransaction.rawTransaction);

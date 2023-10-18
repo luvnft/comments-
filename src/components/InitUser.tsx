@@ -3,13 +3,9 @@ import { Magic } from "magic-sdk";
 import { useState, useEffect, useRef } from "react";
 // import Modal from "react-modal";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { userState } from "@/store/atoms/userState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import {
-  userIdSelector,
-  publicAddressSelector,
-} from "@/store/selectors/userDetailsSelector";
+import { userIdSelector } from "@/store/selectors/userDetailsSelector";
 import { MAGIC_LINK_API_KEY, RPC_URL } from "@/constants";
 import { SolanaExtension } from "@magic-ext/solana";
 import * as web3 from "@solana/web3.js";

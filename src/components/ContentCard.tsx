@@ -1,19 +1,16 @@
-import YouTube from "react-youtube";
 import { contentState } from "@/store/atoms/contentState";
-import { useSetRecoilState, useRecoilValue } from "recoil";
-import { TwitterTweetEmbed } from "react-twitter-embed";
+import { useRecoilValue } from "recoil";
 import {
   InstagramEmbed,
   FacebookEmbed,
-  YouTubeEmbed,
   TwitterEmbed,
 } from "react-social-media-embed";
 import { useEffect, useState } from "react";
 
 export default function ContentCard() {
   const content = useRecoilValue(contentState);
-  console.log("contentID from ContentCard...", content.contentId);
-  console.log("baseURL from ContentCard...", content.rootUrl);
+  // console.log("contentID from ContentCard...", content.contentId);
+  // console.log("baseURL from ContentCard...", content.rootUrl);
 
   useEffect(() => {}, [content]);
 

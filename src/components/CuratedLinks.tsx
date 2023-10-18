@@ -1,15 +1,13 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { curatedLinkState } from "@/store/atoms/curatedLinksState";
 import axios from "axios";
-import YouTube from "react-youtube";
 import { contentState } from "@/store/atoms/contentState";
 
 export default function CuratedLinks() {
   const curatedLinks = useRecoilValue(curatedLinkState);
   const setCuratedLinks = useSetRecoilState(curatedLinkState);
   const setContentState = useSetRecoilState(contentState);
-  const content = useRecoilValue(contentState);
 
   useEffect(() => {
     async function fetchData() {

@@ -61,7 +61,7 @@ export default function PostComment() {
       console.log(e);
     }
   };
-  console.log("userId from post comment is ...", userID);
+  // console.log("userId from post comment is ...", userID);
 
   return userID === null ? (
     <div className=" p-2 m-2 rounded-lg bg-[#2f2f2f] hover:bg-[#1f1f1f]">

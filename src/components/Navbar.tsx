@@ -6,10 +6,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { userState } from "@/store/atoms/userState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import {
-  userIdSelector,
-  publicAddressSelector,
-} from "@/store/selectors/userDetailsSelector";
 import * as web3 from "@solana/web3.js";
 import { MAGIC_LINK_API_KEY, RPC_URL } from "@/constants";
 
@@ -26,22 +22,17 @@ if (typeof window !== "undefined") {
 }
 
 export default function Navbar() {
-  // const userId = useRecoilValue(userIdSelector);
-  // const publicAddress = useRecoilValue(publicAddressSelector)
   const user = useRecoilValue(userState);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [userSearch, setUserSearch] = useState("");
-  // const [publicAddress, setPublicAddress] = useState("");
-  // const [userMetadata, setUserMetadata] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   let metadata: any = null;
   const router = useRouter();
   const setUserState = useSetRecoilState(userState);
 
   const handleLogin = async () => {
-    console.log("handling log in....");
+    // console.log("handling log in....");
 
     try {
       const response = await magic.auth.loginWithEmailOTP({ email });
@@ -69,7 +60,7 @@ export default function Navbar() {
             userId: createUserResponse.data.user.id,
           },
         });
-        console.log("getFollows object from handleLogin...", getFollows);
+        // console.log("getFollows object from handleLogin...", getFollows);
         if (getFollows) {
           setUserState({
             isLoading: false,
@@ -115,17 +106,17 @@ export default function Navbar() {
           balance: balance,
         }));
 
-        console.log("Nav-Bar - AfterLogIn - Balance set to...", balance);
+        // console.log("Nav-Bar - AfterLogIn - Balance set to...", balance);
       } catch (error) {
         // Handle the error, e.g., user not found
         console.log(error);
       }
 
-      console.log("CreateUserResponse is......", createUserResponse);
+      // console.log("CreateUserResponse is......", createUserResponse);
 
-      console.log("logged in successfully with email...", email);
-      console.log("Metadata is....", metadata);
-      console.log("respnse is ...", response);
+      // console.log("logged in successfully with email...", email);
+      // console.log("Metadata is....", metadata);
+      // console.log("respnse is ...", response);
       setIsModalOpen(false);
     } catch (e) {
       alert("Error logging in. Please try later");
@@ -134,13 +125,13 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
-    console.log("logging out...");
+    // console.log("logging out...");
     await magic.user.logout();
 
     const cookieValue = `token=; path=/`;
     document.cookie = cookieValue;
 
-    console.log("User state metadata after loging out....", user);
+    // console.log("User state metadata after loging out....", user);
 
     setUserState({
       isLoading: true,
