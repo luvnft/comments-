@@ -8,6 +8,7 @@ import { userState } from "@/store/atoms/userState";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import * as web3 from "@solana/web3.js";
 import { MAGIC_LINK_API_KEY, RPC_URL } from "@/constants";
+import { contentState } from "@/store/atoms/contentState";
 
 let magic: any = null;
 
@@ -30,6 +31,7 @@ export default function Navbar() {
   let metadata: any = null;
   const router = useRouter();
   const setUserState = useSetRecoilState(userState);
+  const setContentState = useSetRecoilState(contentState);
 
   const handleLogin = async () => {
     // console.log("handling log in....");
@@ -163,13 +165,21 @@ export default function Navbar() {
   return user.id ? (
     <div>
       <div className="sm:flex justify-between p-5">
-        <div>
-          <div
-            className="flex font-extrabold text-xl hover:cursor-pointer"
-            onClick={() => {
-              router.push("/");
-            }}
-          >
+        <div
+          className="hover:cursor-pointer"
+          onClick={() => {
+            setContentState({
+              isLoading: true,
+              link: null,
+              source: null,
+              rootUrl: null,
+              contentId: null,
+              comments: null,
+            });
+            router.push("/");
+          }}
+        >
+          <div className="flex font-extrabold text-xl">
             <div>commentary</div>
             <div className="text-amber-600">.</div>
           </div>
@@ -230,13 +240,21 @@ export default function Navbar() {
     </div>
   ) : (
     <div className="flex justify-between p-5">
-      <div>
-        <div
-          className="flex font-extrabold text-xl hover:cursor-pointer"
-          onClick={() => {
-            router.push("/");
-          }}
-        >
+      <div
+        className="hover:cursor-pointer"
+        onClick={() => {
+          setContentState({
+            isLoading: true,
+            link: null,
+            source: null,
+            rootUrl: null,
+            contentId: null,
+            comments: null,
+          });
+          router.push("/");
+        }}
+      >
+        <div className="flex font-extrabold text-xl">
           <div>commentary</div>
           <div className="text-amber-600">.</div>
         </div>

@@ -43,10 +43,13 @@ export default function PostComment() {
           contentLink: content.rootUrl,
           authorUsername: username,
           authorPublicAddress: authorPublicAddress,
+          authorId: userID,
         },
       });
       //   console.log("comments right now from postcomment....", comments);
-      //   console.log("response after posting comment...", response);
+      // console.log("userID is ...", userID);
+      // console.log("response after posting comment...", response);
+
       //   console.log("response.data.comment is ....", response.data.comment);
       //   comments.push(response.data.comment);
       //   console.log("new comments array...", comments);
