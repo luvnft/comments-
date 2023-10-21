@@ -7,7 +7,12 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
-      const { userId, take, skip }: any = req.body;
+      const { userId, take, skip, password }: any = req.body;
+
+      //check password
+      if (password !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
 
       const user = await prisma.user.findUnique({
         where: { id: userId },
