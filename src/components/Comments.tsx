@@ -32,8 +32,6 @@ export default function Comments() {
   const router = useRouter();
   const content = useRecoilValue(contentState);
   const userId = useRecoilValue(userIdSelector);
-  const userEmail = useRecoilValue(userEmailSelector);
-  //   const [sendingTransaction, setSendingTransaction] = useState(false);
   const userPublicAddress = useRecoilValue(publicAddressSelector);
   const userBalance = useRecoilValue(balanceSelector);
   const [isFirstUserModal, setIsFirstUserModal] = useState(false);
@@ -63,6 +61,8 @@ export default function Comments() {
         return;
       }
 
+      setLikedComments((prevIds) => [...prevIds, id]);
+
       //transaction may fail but the like is still added in the db - fix later
       let response: any = await axios({
         method: "POST",
@@ -74,18 +74,12 @@ export default function Comments() {
           //   authorPublicAddress: authorPublicAddress,
         },
       });
-      if (response.status === 200) {
-        // Update the liked comment IDs with the new ID
-        setLikedComments((prevIds) => [...prevIds, id]);
-        handleTransaction(authorPublicAddress);
-      }
-
       // Check if the response indicates an error
       if (response.data.error) {
         // Handle the error by displaying an alert or a user-friendly message
         alert("Error: " + response.data.error);
       }
-      console.log("updated comment...", response);
+      // console.log("updated comment...", response);
       const updatedComment = response.data.updatedComment;
       // Find the index of the comment you want to update
       const commentIndex = comments.findIndex(
@@ -103,6 +97,11 @@ export default function Comments() {
           comments: updatedComments,
         }));
       }
+      if (response.status === 200) {
+        // Update the liked comment IDs with the new ID
+        // setLikedComments((prevIds) => [...prevIds, id]);
+        handleTransaction(authorPublicAddress);
+      }
     } catch (error) {
       // Handle any network errors or other unexpected issues
       console.error("An error occurred:", error);
@@ -114,7 +113,7 @@ export default function Comments() {
     try {
       //   setSendingTransaction(true);
       if (userPublicAddress === authorPublicAddress) {
-        alert("Cannot send transaction to yourself");
+        alert("Cannot like your own comments.");
         return;
       }
       let payer_base58publicKey = new web3.PublicKey(userPublicAddress || "");
@@ -156,7 +155,7 @@ export default function Comments() {
       //Now to send transaction
       const tx = web3.Transaction.from(signedTransaction.rawTransaction);
       const signature = await connection.sendRawTransaction(tx.serialize());
-      console.log("here is the sent transaction signature", signature);
+      // console.log("here is the sent transaction signature", signature);
 
       //   setSendingTransaction(false);
     } catch (e) {
