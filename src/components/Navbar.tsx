@@ -180,10 +180,10 @@ export default function Navbar() {
           }}
         >
           <div className="flex font-extrabold text-xl">
-            <div>commentary</div>
+            <div>$SOLicit</div>
             <div className="text-amber-600">.</div>
           </div>
-          <div className="text-xs text-gray-600">comment & earn</div>
+          <div className="text-xs text-gray-300">Solicit positive opinions, advice, or feedback to earn $SOL</div>
         </div>
 
         <div className="flex justify-normal">
