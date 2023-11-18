@@ -108,17 +108,17 @@ export default function PostComment() {
         ariaHideApp={false}
       >
         <div className="flex font-extrabold text-xl mb-3 hover:cursor-pointer text-black">
-          <div>commentary</div>
+          <div>$SOLicit</div>
           <div className="text-amber-600">.</div>
         </div>
         <div className="mb-1 text-black font-semibold">
-          The only app where your comments can earn money.
+          The only app where your positive comments can earn money.
         </div>
         <div className="text-black">
           Your balance may be low. Follow these steps to get started.
         </div>
         <div className="text-black">
-          1. Copy your address from navigation menu.
+          1. Copy your address from the navigation menu.
         </div>
         <div className="text-black">
           2. Go to{" "}
