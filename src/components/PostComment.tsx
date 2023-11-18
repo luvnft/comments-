@@ -108,7 +108,7 @@ export default function PostComment() {
         ariaHideApp={false}
       >
         <div className="flex font-extrabold text-xl mb-3 hover:cursor-pointer text-black">
-          <div>commentary</div>
+          <div>$SOLicit</div>
           <div className="text-amber-600">.</div>
         </div>
         <div className="mb-1 text-black font-semibold">

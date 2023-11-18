@@ -13,7 +13,7 @@ export default function Footer() {
           router.push("/");
         }}
       >
-        <div>commentary</div>
+        <div>$SOLicit</div>
         <div className="text-amber-600">.</div>
       </div>
       <p className="text-gray-500 text-sm">

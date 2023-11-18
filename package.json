@@ -1,5 +1,5 @@
 {
-  "name": "commentary",
+  "name": "solicit",
   "version": "0.1.0",
   "private": true,
   "types": "typings/solana.d.ts",
