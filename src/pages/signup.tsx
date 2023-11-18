@@ -10,7 +10,7 @@ export default function signup() {
   return (
     <div className="flex justify-center">
       <div>
-        <div className="text-lg">Welcome to commentary. Sign up below</div>
+        <div className="text-lg">Welcome to $SOLicit. Sign up below</div>
         <div>
           <input
             type="name"
