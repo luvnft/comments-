@@ -117,7 +117,7 @@ export default function Searchbar() {
         </button>
       )}
       <input
-        placeholder="insert youtube, instagram, twitter/X link here"
+        placeholder="Paste Youtube, Instagram, X links here"
         className="text-black w-80 p-2 m-2"
         onChange={(e) => {
           setCurrentLink(e.target.value);
