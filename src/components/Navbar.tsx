@@ -258,11 +258,7 @@ export default function Navbar() {
           <div>$SOLicit</div>
           <div className="text-amber-600">.</div>
         </div>
-<<<<<<< HEAD
-        <div className="text-xs text-gray-300">Solicit positive opinions, advice, or feedback to earn $SOL</div>
-=======
-        <div className="text-xs text-gray-600">Solicit positive opinions, advice, or feedback to earn $SOL</div>
->>>>>>> a6ace1084ada645a5476260464d125a1da7892fc
+        <div className="text-xs text-gray-600">comment & earn</div>
       </div>
       <button
         className="bg-amber-600 rounded-xl p-3"
