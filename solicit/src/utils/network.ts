@@ -6,9 +6,9 @@ export enum Network {
 export const getNetworkUrl = () => {
   switch (process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK) {
     case Network.SOLANA_DENVET:
-      return 'https://solana-devnet.g.alchemy.com/v2/NUZZICdM-417xyZwDhka3615uai5GQFr';
+      return 'https://solana-devnet.g.alchemy.com/v2/4JMzKyXfJQJh0p0jOpUxSLO02PfdlCj6';
     case Network.SOLANA_MAINNET_BETA:
-      return 'https://solana-mainnet.g.alchemy.com/v2/9nCoa06gjvDwYyTdV5ruBp2Qe4_wZnaO';
+      return 'https://solana-mainnet.g.alchemy.com/v2/DAfFtjudU6WUxNJuJ5RnM3gdKcx5hEHY';
     default:
       throw new Error('Network not supported');
   }
