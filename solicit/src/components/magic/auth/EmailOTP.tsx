@@ -1,5 +1,5 @@
 import { useMagic } from '../MagicProvider';
-import showToast from '@/utils/showToast';
+import { showToast } from '../../utils/showToast'; // Check the import path for showToast
 import Spinner from '../../ui/Spinner';
 import { RPCError, RPCErrorCode } from 'magic-sdk';
 import { LoginProps } from '@/utils/types';
@@ -30,6 +30,7 @@ const EmailOTP = ({ token, setToken }: LoginProps) => {
       } catch (e) {
         console.log('login error: ' + JSON.stringify(e));
         if (e instanceof RPCError) {
+          // Ensure e is an instance of RPCError before handling it
           switch (e.code) {
             case RPCErrorCode.MagicLinkFailedVerification:
             case RPCErrorCode.MagicLinkExpired:
@@ -65,7 +66,7 @@ const EmailOTP = ({ token, setToken }: LoginProps) => {
         {emailError && <span className="error">Enter a valid email</span>}
         <button
           className="login-button"
-          disabled={isLoginInProgress || (token.length > 0 ? false : email.length == 0)}
+          disabled={isLoginInProgress || (token.length > 0 ? false : email.length === 0)} // Use === for comparison
           onClick={() => handleLogin()}
         >
           {isLoginInProgress ? <Spinner /> : 'Log in / Sign up'}
