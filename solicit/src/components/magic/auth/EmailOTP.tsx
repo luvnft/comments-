@@ -1,5 +1,5 @@
 import { useMagic } from '../MagicProvider';
-import { showToast } from '../../utils/showToast'; // Check the import path for showToast
+import showToast from '@utils/showToast'; // Check the import path for showToast
 import Spinner from '../../ui/Spinner';
 import { RPCError, RPCErrorCode } from 'magic-sdk';
 import { LoginProps } from '@/utils/types';
