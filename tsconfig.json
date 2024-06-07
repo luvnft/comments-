@@ -14,12 +14,11 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@utils/*": ["solicit/src/utils/*"],
-      "@/utils/*": ["solicit/src/utils/*"],
+      "@/*": ["src/*"],
+      "@utils/*": ["src/utils/*"],
+      "@/utils/*": ["src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
-
